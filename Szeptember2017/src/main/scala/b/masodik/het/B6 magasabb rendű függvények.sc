@@ -18,7 +18,7 @@ def isMajorPerson(p: Person, predicate: Int => Boolean): Boolean = {
 }
 
 
-// Akkor is magasabb rendű függvény, ha a
+// Akkor is magasabb rendű a függvény, ha a
 // visszatérési értéke függvény
 
 
