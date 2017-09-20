@@ -2,7 +2,11 @@ package c.harmadik.het
 
 import scala.io.Source
 
-object Csomagolópapír2 extends App {
+
+// --- Fájl input
+
+
+object Csomagolópapír1 extends App {
 
   val fájl = Source.fromFile("Szeptember2017/src/main/scala/c/harmadik/het/csomagolópapír.txt")
   val str = fájl.mkString
@@ -10,13 +14,10 @@ object Csomagolópapír2 extends App {
   val dobozok = iterator.toList
 
   // szélesség, magasság és hosszúság
-  val szmh = """(\d+)x(\d+)x(\d+)""".r
+  def szmh(doboz:String): Array[Int] = doboz.split('x').map(str => str.toInt)
 
-  val eredmény = dobozok.map(doboz => doboz match {
-    case szmh(szStr, mStr, hStr) =>
-      val sz = szStr.toInt
-      val m = mStr.toInt
-      val h = hStr.toInt
+  val eredmény = dobozok.map(doboz => szmh(doboz) match {
+    case Array(sz, m, h) =>
       val területek = List(sz * m, sz * h, m * h)
       val legkisebb = területek.min
       val papírEgyDobozra = legkisebb + 2 * területek.sum
