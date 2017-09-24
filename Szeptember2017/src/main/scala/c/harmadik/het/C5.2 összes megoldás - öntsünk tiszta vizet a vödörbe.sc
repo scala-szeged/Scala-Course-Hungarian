@@ -1,24 +1,24 @@
 
 // Viszkok Tamás megoldása
 
-def töltsd(víz: Int, vödrök: List[Int], részMegoldás: List[Int], megoldások: List[List[Int]]): List[List[Int]] = {
+def töltsd(víz: Int, vödrök: List[Int], részMegoldás: List[Int]): List[List[Int]] = {
 
   if (vödrök != Nil) {
 
     val újMegoldás = vödrök.head :: részMegoldás
 
     if (újMegoldás.sum == víz) {
-      újMegoldás::megoldások ::: töltsd(víz, vödrök.tail, részMegoldás, megoldások)
+      újMegoldás :: töltsd(víz, vödrök.tail, részMegoldás)
 
     } else if(újMegoldás.sum < víz){
-      töltsd(víz, vödrök.tail, újMegoldás, megoldások) ::: töltsd(víz, vödrök.tail, részMegoldás, megoldások)
+      töltsd(víz, vödrök.tail, újMegoldás) ::: töltsd(víz, vödrök.tail, részMegoldás)
 
     } else {
-      töltsd(víz, vödrök.tail, részMegoldás, megoldások)
+      töltsd(víz, vödrök.tail, részMegoldás)
     }
 
   } else {
-    megoldások
+    Nil
   }
 }
 
@@ -32,7 +32,7 @@ println("--- Összes vödör nagyság szerint")
 println(összesVödörNagyságSzerint)
 
 val indulás = System.currentTimeMillis()
-val megoldás = töltsd(vízMennyisége, összesVödörNagyságSzerint, Nil, Nil)
+val megoldás = töltsd(vízMennyisége, összesVödörNagyságSzerint, Nil)
 val befejezés = System.currentTimeMillis()
 
 println("--- Megoldások")
