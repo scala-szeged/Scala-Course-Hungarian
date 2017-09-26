@@ -38,6 +38,7 @@ val féleképpen = for (n <- 2 to 12) yield (n, variációk(n))
 
 
 
+
 // --- Lista kezelés, 4. hét
 
 
