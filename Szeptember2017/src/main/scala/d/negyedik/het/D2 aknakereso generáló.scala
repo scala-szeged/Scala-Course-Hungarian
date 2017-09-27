@@ -37,6 +37,20 @@ object AknakeresőGeneráló {
     }
 
     def rakd(x: Int, y: Int, tábla: Tábla): Tábla =
+      for (sorIndex <- tábla.zipWithIndex) yield
+        for (cellaIndex <- sorIndex._1.zipWithIndex) yield
+          (cellaIndex._1, sorIndex._2, cellaIndex._2) match {
+
+            case (_, cx, cy) if cx == x && cy == y =>
+              Akna
+
+            case (Szám(n), cx, cy) =>
+              if (Math.abs(cx - x) <= 1 && Math.abs(cy - y) <= 1) Szám(n + 1)
+              else Szám(n)
+
+            case (c, _, _) =>
+              c
+          }
 
 
   }
