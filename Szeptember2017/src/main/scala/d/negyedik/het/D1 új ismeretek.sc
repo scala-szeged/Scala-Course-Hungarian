@@ -29,6 +29,8 @@ for (névÉsIndex <- nevek.zipWithIndex) {
   println((névÉsIndex._2+1).toString + ". " + névÉsIndex._1)
 }
 
+
+
 // Egy for több iterációt is végrehajthat
 
 val sakkTáblaSet = for {
