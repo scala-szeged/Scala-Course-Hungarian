@@ -1,8 +1,10 @@
 
 // --- For comprehension, 4. hét
 
+
 // mindhárom ugyanaz
 // Lásd bővebben: https://docs.scala-lang.org/tutorials/FAQ/yield.html
+
 val xs = for (x <- List(9, 8, 7)) yield (x / 2)
 val ys = for (y <- List(9, 8, 7)) yield y / 2
 val zs = List(9, 8, 7).map(z => z / 2)
@@ -46,12 +48,25 @@ val féleképpen = for (n <- 2 to 12) yield (n, variációk(n))
 
 List(3, 4) ::: List(5, 6, 7)
 
-List(List(1,2),List(3, 4)) ::: List(List(5, 6, 7))
+List(List(1, 2), List(3, 4)) ::: List(List(5, 6, 7))
 
 
 // :: elem hozzáfűzése a lista elejére
 
 List(3, 4) :: List(List(5, 6, 7))
 
-List(1,2) :: List(3, 4) :: List(List(5, 6, 7))
+List(1, 2) :: List(3, 4) :: List(List(5, 6, 7))
 
+
+// mindkettő ugyanaz
+
+val list1 = List(99)
+
+val list2 = 99 :: Nil
+
+list2.size == 1
+
+val h = list1.head
+val t = list1.tail
+
+t == Nil
