@@ -11,8 +11,22 @@ val zs = List(9, 8, 7).map(z => z / 2)
 
 // for - nak lehet Unit típusú törzse is, map -nek nem
 
-for (y <- List(9, 8, 7)) {
-  println(y / 2)
+val nevek = List("Andor", "Béla", "Csilla")
+
+for (név <- nevek) {
+  println(név)
+}
+
+// zipWithIndex
+
+val elemekTípusa = nevek.zipWithIndex.head.getClass
+
+for (névÉsIndex <- nevek.zipWithIndex) {
+  println(névÉsIndex)
+}
+
+for (névÉsIndex <- nevek.zipWithIndex) {
+  println((névÉsIndex._2+1).toString + ". " + névÉsIndex._1)
 }
 
 // Egy for több iterációt is végrehajthat
