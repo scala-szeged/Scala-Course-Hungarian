@@ -24,31 +24,31 @@ object AknakeresőKonzolon {
     /*
     val elválasztó = "   "
 
-    val as = List(List(1, 2), List(3, 4))
+    val aTábla = List(List(1, 2), List(3, 4))
     // 12
     // 34
 
-    val bs = List(List(6, 7), List(8, 9))
+    val bTábla = List(List(6, 7), List(8, 9))
     // 67
     // 89
 
-    val t = List(as,bs)
-    t: List[List[List[Int]]] = List(List(List(1, 2), List(3, 4)), List(List(6, 7), List(8, 9)))
+    val táblák = List(aTábla, bTábla)
+    táblák: List[List[List[Int]]] = List(List(List(1, 2), List(3, 4)), List(List(6, 7), List(8, 9)))
 
-    t.transpose
+    táblák.transpose
     res8: List[List[List[Int]]] = List(List(List(1, 2), List(6, 7)), List(List(3, 4), List(8, 9)))
 
-    t.transpose.mkString("\n")
+    táblák.transpose.mkString("\n")
     res9: String =
     List(List(1, 2), List(6, 7))
     List(List(3, 4), List(8, 9))
 
-    t.transpose.map(_.mkString(elválasztó)).mkString("\n")
+    táblák.transpose.map(_.mkString(elválasztó)).mkString("\n")
     res10: String =
     List(1, 2)   List(6, 7)
     List(3, 4)   List(8, 9)
 
-    t.transpose.map(_.map(_.mkString).mkString(elválasztó)).mkString("\n")
+    táblák.transpose.map(_.map(_.mkString).mkString(elválasztó)).mkString("\n")
     res11: String =
     12   67
     34   89
