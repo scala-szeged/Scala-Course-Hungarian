@@ -1,5 +1,7 @@
 package d.negyedik.het
 
+import java.lang.Math.abs
+
 
 object AknakeresőGeneráló {
 
@@ -44,9 +46,8 @@ object AknakeresőGeneráló {
             case (_, cx, cy) if cx == x && cy == y =>
               Akna
 
-            case (Szám(n), cx, cy) =>
-              if (Math.abs(cx - x) <= 1 && Math.abs(cy - y) <= 1) Szám(n + 1)
-              else Szám(n)
+            case (Szám(n), cx, cy) if abs(cx - x) <= 1 && abs(cy - y) <= 1 =>
+              Szám(n + 1)
 
             case (c, _, _) =>
               c
