@@ -22,21 +22,15 @@ object AknakeresőGeneráló {
       List(Szám(0), Szám(0), Szám(0))
     )
 
-    írdKi(rakd(0,1,rakd(0, 0, üres)))
-    írdKi(rakd(0, 1, üres))
-    írdKi(rakd(1, 1, üres))
+    view.AknakeresőKonzolon.írdKiEgymásMellé(
 
+      rakd(0, 1, rakd(0, 0, üres))
+      ,
+      rakd(0, 1, üres)
+      ,
+      rakd(1, 1, üres)
+    )
 
-    def írdKi(tábla: Tábla): Unit = {
-      for (sor <- tábla) {
-        println
-        for (cella <- sor) cella match {
-          case Akna => print("*")
-          case Szám(n) => print(n)
-        }
-      }
-      println
-    }
 
     def rakd(x: Int, y: Int, tábla: Tábla): Tábla =
       for (sorIndex <- tábla.zipWithIndex) yield
