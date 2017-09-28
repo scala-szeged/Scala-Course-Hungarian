@@ -1,3 +1,3 @@
-package data
+package model
 
 case class Person(name: String, age: Int)
