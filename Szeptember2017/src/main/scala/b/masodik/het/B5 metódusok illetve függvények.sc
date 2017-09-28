@@ -1,4 +1,4 @@
-import data.Person
+import model.Person
 
 
 // --- Metódusok, illetve függvények
