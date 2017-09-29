@@ -17,7 +17,7 @@ object AknakeresőKonzolon {
     val elválasztó = "   "
 
     println(
-      táblák.map(cellánkéntString)
+      táblák.map((t:Tábla) => cellánkéntString(t))
         .transpose.map(_.map(_.mkString).mkString(elválasztó)).mkString("\n")
     )
 
