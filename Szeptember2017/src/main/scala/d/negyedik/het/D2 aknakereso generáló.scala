@@ -33,9 +33,9 @@ object AknakeresőGeneráló {
 
 
     def rakd(x: Int, y: Int, tábla: Tábla): Tábla =
-      for (sorIndex <- tábla.zipWithIndex) yield
-        for (cellaIndex <- sorIndex._1.zipWithIndex) yield
-          (cellaIndex._1, sorIndex._2, cellaIndex._2) match {
+      for (sorÉsIndex <- tábla.zipWithIndex) yield
+        for (cellaÉsIndex <- sorÉsIndex._1.zipWithIndex) yield
+          (cellaÉsIndex._1, cellaÉsIndex._2, sorÉsIndex._2) match {
 
             case (_, cx, cy) if cx == x && cy == y =>
               Akna
