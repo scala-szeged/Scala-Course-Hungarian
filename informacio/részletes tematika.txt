@@ -1,0 +1,13 @@
+1	Kurzus tematikájának és teljesítési feltételeinek ismertetése. Funkcionális programozás előnyei. Scala nyelv előnyei néhány példával. A példák megértéséhez szükséges nyelvi elemek
+2	REPLesent, interaktív slide -ok Scala REPL alatt. Scala osztályok, interfészek, metódusok
+3	Case class -ok. Singleton, mint nyelvi elem. Immutable adat és annak előnyei. IO Scala -ban
+4	Pattern matching több mélységben, valamint reguláris kifejezésre. For comprehension
+5	Szokásos adatstruktúrák és működésük Scala -ban animációkkal illusztrálva
+6	Rekurzív algoritmusok. Végrekurzív optimalizálás és trampoline mint alternatíva
+7	Monad bevezetésként. Fokozott kombinálhatóság - MI építése Lego-szerű építőkockákkal, első rész
+8	Fokozott kombinálhatóság - MI építése Lego-szerű építőkockákkal, második rész
+9	Doménspecifikus nyelv (DSL) fejlesztése Scala hordozó nyelven. Pénzügyi DSL, első rész
+10	Pénzügyi DSL, második rész
+11	Alkalmazáslogika építése hatékony egyszerűséggel és párhuzamos programozással, első rész
+12	Alkalmazáslogika építése hatékony egyszerűséggel és párhuzamos programozással, második rész
+13	Típus szintű programozás - a compiler keresse a hibákat, ne a programozó
