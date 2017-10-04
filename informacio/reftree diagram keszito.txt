@@ -1,0 +1,6 @@
+Linkek a reftree diagram készítőre:
+
+https://www.google.hu/search?safe=off&client=opera&hs=MoF&q=github+stanch+reftree&oq=github+stanch+reftree
+
+
+Scala adatszerkezetek grafikus megjelenítője
