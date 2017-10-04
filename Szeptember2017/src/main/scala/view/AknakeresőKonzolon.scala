@@ -1,16 +1,22 @@
 package view
 
-import d.negyedik.het.AknakeresőGeneráló.{Akna, Szám, Tábla}
+import d.negyedik.het.AknakeresőGeneráló._
 
 object AknakeresőKonzolon {
 
   def írdKiEgymásMellé(táblák: Tábla*): Unit = {
+    írdKiEgymásMellé(táblák.toList)
+  }
+
+  def írdKiEgymásMellé(táblák: List[Tábla]): Unit = {
 
     def cellánkéntString(tábla: Tábla): List[List[String]] = {
       for (sor <- tábla) yield
         for (cella <- sor) yield cella match {
           case Akna => "*"
           case Szám(n) => n.toString
+          case TakartAkna => "."
+          case TakartSzám(_) => "."
         }
     }
 
