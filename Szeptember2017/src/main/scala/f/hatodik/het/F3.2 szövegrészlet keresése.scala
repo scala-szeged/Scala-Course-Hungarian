@@ -19,15 +19,17 @@ object SzövegrészletKeresése {
         case (a :: _, b :: Nil) if a == b =>
           true
 
-        case (Nil, _) =>
-          false
-
         case (_, Nil) =>
           true
 
+        case (Nil, _) =>
+          false
+
         case (a :: aTovább, b :: bTovább) =>
           if (a == b) {
-            loop(aTovább, bTovább) || loop(aTovább, bElőlről)
+            loop(aTovább, bTovább)
+          } else if (a == bElőlről.head) {
+            loop(a :: aTovább, bElőlről)
           } else {
             loop(aTovább, bElőlről)
           }

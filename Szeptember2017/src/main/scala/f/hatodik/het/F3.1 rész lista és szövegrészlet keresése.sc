@@ -1,21 +1,24 @@
 
 def részListaE[A](aElőlről: List[A], bElőlről: List[A]): Boolean = {
 
+  @annotation.tailrec
   def loop(aLista: List[A], bLista: List[A]): Boolean =
     (aLista, bLista) match {
 
       case (a :: _, b :: Nil) if a == b =>
         true
 
-      case (Nil, _) =>
-        false
-
       case (_, Nil) =>
         true
 
+      case (Nil, _) =>
+        false
+
       case (a :: aTovább, b :: bTovább) =>
         if (a == b) {
-          loop(aTovább, bTovább) || loop(aTovább, bElőlről)
+          loop(aTovább, bTovább)
+        } else if (a == bElőlről.head) {
+          loop(a :: aTovább, bElőlről)
         } else {
           loop(aTovább, bElőlről)
         }
@@ -26,6 +29,8 @@ def részListaE[A](aElőlről: List[A], bElőlről: List[A]): Boolean = {
 
 részListaE(Nil, Nil)
 // pontosan ezt jelenti: részListaE(List(), List())
+
+részListaE("miminden volt ma?".toList, "minden".toList)
 
 részListaE("minden nap".toList, "naknap".toList)
 részListaE("minden nap".toList, "na".toList)
