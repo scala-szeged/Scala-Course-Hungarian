@@ -35,7 +35,7 @@ object AknakeresőGeneráló {
       println
     }
 
-    def rakd(x: Int, y: Int, tábla: Tábla): Tábla =
+    def rakd(x: Int, y: Int, tábla: Tábla): Tábla = Nil
 
 
   }

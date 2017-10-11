@@ -1,26 +1,32 @@
 
 
 
-def töltsd(víz: Int, vödrök: List[Int], részMegoldás: List[Int], írdFel: List[Int] => Unit): Unit = {
+def töltsd(víz: Int, vödrök: List[Int]): List[List[Int]] = {
 
-  if (vödrök != Nil) {
+  def töltsd(víz: Int, vödrök: List[Int], részMegoldás: List[Int], írdFel: List[Int] => Unit): Unit = {
 
-    val újMegoldás = vödrök.head :: részMegoldás
+    if (vödrök != Nil) {
 
-    if (újMegoldás.sum == víz) {
-      írdFel(újMegoldás)
+      val újMegoldás = vödrök.head :: részMegoldás
 
-    } else if (újMegoldás.sum < víz) {
-      töltsd(víz, vödrök.tail, újMegoldás, írdFel)
+      if (újMegoldás.sum == víz) {
+        írdFel(újMegoldás)
 
+      } else if (újMegoldás.sum < víz) {
+        töltsd(víz, vödrök.tail, újMegoldás, írdFel)
+
+      }
+
+      töltsd(víz, vödrök.tail, részMegoldás, írdFel)
     }
-
-    töltsd(víz, vödrök.tail, részMegoldás, írdFel)
   }
-}
 
-var megoldások = Nil: List[List[Int]]
-val írdFel = { megoldás: List[Int] => megoldások = megoldás :: megoldások }
+  var megoldások = Nil: List[List[Int]]
+  val írdFel = { megoldás: List[Int] => megoldások = megoldás :: megoldások }
+
+  töltsd(víz,vödrök,Nil,írdFel)
+  megoldások
+}
 
 
 
@@ -34,7 +40,7 @@ println("--- Összes vödör nagyság szerint")
 println(összesVödörNagyságSzerint)
 
 val indulás = System.currentTimeMillis()
-töltsd(vízMennyisége, összesVödörNagyságSzerint, Nil, írdFel)
+val megoldások = töltsd(vízMennyisége, összesVödörNagyságSzerint)
 val befejezés = System.currentTimeMillis()
 
 println("--- Megoldások")
