@@ -1,6 +1,6 @@
 import scala.io.Source
 
-object SzövegrészletKeresése {
+object F_3_2_SzövegrészletKeresése {
 
   def main(args: Array[String]): Unit = {
     val fájl = Source.fromFile("Szeptember2017/src/main/scala/c/harmadik/het/csomagolópapír.txt")
