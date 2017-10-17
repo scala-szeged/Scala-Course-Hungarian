@@ -1,12 +1,14 @@
 package g.hetedik.het
 
 import scala.concurrent.Future
+import scala.io.Source
 import scala.util.{Failure, Success}
 
 // https://docs.google.com/presentation/d/1lbRuaIun8IOpw0hM52Amj6N-V25Uu52udRoYx2RBWJc/edit#slide=id.g17ca778fd0_0_1091
 // https://github.com/hablapps/bypassingfreemonads
 // https://github.com/hablapps/gist
 
+//noinspection TypeAnnotation, LanguageFeature
 object G2_2_Szinkron_Aszinkron_Absztakció extends App {
 
 
@@ -65,9 +67,12 @@ object G2_2_Szinkron_Aszinkron_Absztakció extends App {
       def loggedCalculation[P[_] : IO : Monad]: P[String] =
         read() flatMap { input =>
           log(input) flatMap { _ =>
-            returns(input)
+            calculate(input) map { result =>
+              result
+            }
           }
-        }*/
+        }
+    */
 
     /**
       * Using for-comprehensions, we are now able to log our program with the
@@ -97,18 +102,17 @@ object G2_2_Szinkron_Aszinkron_Absztakció extends App {
 
     implicit object OptionIO extends IO[Option] {
       override def read(): Option[String] =
-        Some("2 days ago")
+        Some("A 10x22 szövegrészlet részlista típusú keresése csomagolópapír.txt -ben")
 
       override def log(input: String): Option[Unit] =
         Some {
-          println(s"OptionIO log: DayDslApp will calculate: $input")
+          println(s"OptionIO log: ez fog történni: $input")
         }
 
       def calculate(sentence: String): Option[String] = {
-        import DayDslApp._
-        Some(String.valueOf(
-          2 days ago
-        ))
+        val lista = Source.fromFile("Szeptember2017/src/main/scala/c/harmadik/het/csomagolópapír.txt").toList
+        val eredmény = f.hatodik.het.F_3_2_SzövegrészletKeresése.részListaE(lista, "10x22".toList)
+        Some(eredmény.toString)
       }
     }
 
