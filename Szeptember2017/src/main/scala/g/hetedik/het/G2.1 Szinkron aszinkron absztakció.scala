@@ -53,7 +53,9 @@ object G2_1_Szinkron_Aszinkron_Absztakció {
   class TerminalAsync(implicit EC: ExecutionContext) extends Terminal[Future] {
 
     def read: Future[String] = Future {
-      val fájl = scala.io.Source.fromURL("https://raw.githubusercontent.com/fommil/fpmortals/master/src/main/scala/chapter1.scala")
+      val fájl = scala.io.Source.fromURL(
+        "https://raw.githubusercontent.com/fommil/fpmortals/master/src/main/scala/chapter1.scala"
+      )
       fájl.mkString
     }
 

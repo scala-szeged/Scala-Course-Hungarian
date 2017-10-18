@@ -54,9 +54,26 @@ val erreFordítjaAFordító =
 /*
 erreFordítjaAFordító: String = Expr[scala.Option[Int]](
 
-a.flatMap(i =>
-  b.flatMap(j =>
-    c.map(k => i.$plus(j).$plus(k))
-  )
+  a.flatMap(i =>
+    b.flatMap(j =>
+      c.map(k => i.$plus(j).$plus(k))
+    )
 )
 */
+
+
+
+// --- Source.fromURL
+
+val fájl = scala.io.Source.fromURL(
+  "https://raw.githubusercontent.com/fommil/fpmortals/master/src/main/scala/chapter1.scala"
+)
+fájl.mkString.take(200)
+
+
+// --- Future
+
+// Olyan értéket burkol be, amit a jövőben fogunk megkapni
+// Callback -vel működik, de kényelmesebben. Lásd a for
+// comprenehsionben használatát pl. itt:
+// g.hetedik.het.G2_1_Szinkron_Aszinkron_Absztakció.echo
