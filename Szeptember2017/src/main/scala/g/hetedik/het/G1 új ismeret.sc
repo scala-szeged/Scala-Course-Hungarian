@@ -27,6 +27,13 @@ opcióOlvasó.olvasd()
 
 
 
+// Ez egy type alias, ami magasabb színtű típus -ként használhatóvá
+// teszi Now -t. A jelentése pedig az általa bebúrkolt típus (X) lesz
+
+type Now[X] = X
+
+
+
 // http://www.scala-sbt.org/0.13/docs/Configuring-Scala.html
 // kell az import -hoz, hogy ne legyen piros,
 // viszont úgy is működik, mert Scala Workshhet (sc) fájlban van
