@@ -24,6 +24,7 @@ object G2_1_Szinkron_Aszinkron_Absztakció {
     } yield in
 
   type Now[X] = X
+
   implicit val now: Terminal[Now] = TerminalSync
   implicit val future: Terminal[Future] = new TerminalAsync
 
@@ -34,9 +35,6 @@ object G2_1_Szinkron_Aszinkron_Absztakció {
     // interpret for Future
     val running: Future[String] = echo[Future]
     Await.result(running, Duration.Inf)
-  }
-
-  object `package` {
   }
 
   //noinspection LanguageFeature
