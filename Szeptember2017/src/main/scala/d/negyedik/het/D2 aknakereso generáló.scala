@@ -1,22 +1,10 @@
 package d.negyedik.het
 
+import model.AknakeresoModel._
 import java.lang.Math.abs
 
 
-object AknakeresőGeneráló {
-
-  class Cella
-
-  case object Akna extends Cella
-
-  case class Szám(n: Int) extends Cella
-
-  case object TakartAkna extends Cella
-
-  case class TakartSzám(n: Int) extends Cella
-
-  type Tábla = List[List[Cella]]
-
+object D2_AknakeresőGeneráló {
 
   def main(args: Array[String]): Unit = {
 
@@ -31,7 +19,7 @@ object AknakeresőGeneráló {
     val c = rakd(1, 1, üres)
 
     view.AknakeresőKonzolon.írdKiEgymásMellé(
-      List(a, b, c)
+      a, b, c
     )
 
     println
@@ -67,28 +55,38 @@ object AknakeresőGeneráló {
       }
 
   def takardKi(x: Int, y: Int, tábla: Tábla): Tábla = {
+
+    def nullátTakarKiÉsEzSzomszédja(cx: Int, cy: Int) = tábla(y)(x) match {
+      case TakartSzám(0) if abs(cx - x) <= 1 && abs(cy - y) <= 1 =>
+        true
+      case _ =>
+        false
+    }
+
     val ki = for (sorÉsIndex <- tábla.zipWithIndex) yield
       for (cellaÉsIndex <- sorÉsIndex._1.zipWithIndex) yield {
+
         val cella = cellaÉsIndex._1
         val cellaIndex = cellaÉsIndex._2
         val sorIndex = sorÉsIndex._2
-        (tábla(sorIndex)(cellaIndex), cella, cellaIndex, sorIndex) match {
 
-          case (_, TakartAkna, cx, cy) if cx == x && cy == y =>
+        (cella, cellaIndex, sorIndex) match {
+
+          case (TakartAkna, cx, cy) if cx == x && cy == y =>
             Akna
 
-          case (Szám(0), TakartSzám(n), cx, cy) if abs(cx - x) <= 1 && abs(cy - y) <= 1 =>
+          case (TakartSzám(n), cx, cy) if nullátTakarKiÉsEzSzomszédja(cx, cy) =>
             Szám(n)
 
-          case (_, TakartSzám(n), cx, cy) if cx == x && cy == y =>
+          case (TakartSzám(n), cx, cy) if cx == x && cy == y =>
             Szám(n)
 
-          case (_, c, _, _) =>
+          case (c, _, _) =>
             c
         }
       }
 
-    if(tábla(y)(x)==TakartSzám(0) && ki(y)(x)==Szám(0))
+    if(tábla(y)(x)==TakartSzám(0))
       takardKi(x,y,ki)
     else
       ki

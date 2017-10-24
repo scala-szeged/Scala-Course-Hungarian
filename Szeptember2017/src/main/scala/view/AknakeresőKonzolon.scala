@@ -1,6 +1,7 @@
 package view
 
-import d.negyedik.het.AknakeresőGeneráló._
+import model.AknakeresoModel._
+
 
 object AknakeresőKonzolon {
 
