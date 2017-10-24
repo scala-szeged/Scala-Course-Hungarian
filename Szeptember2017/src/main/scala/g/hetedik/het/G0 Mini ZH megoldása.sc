@@ -10,6 +10,9 @@ def keresd(esz: List[Char], n: Long = 0): Long = esz match {
   case _ :: Nil =>
     n
 
+  case Nil =>
+    n
+
   case a :: b :: t =>
     val újn = (a - '0') * (b - '0')
     if (újn > n) keresd(b :: t, újn)
@@ -17,3 +20,4 @@ def keresd(esz: List[Char], n: Long = 0): Long = esz match {
 }
 
 keresd("7316717653133".toList)
+keresd(Nil)

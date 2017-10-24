@@ -29,10 +29,9 @@ object AknakeresőGeneráló {
     val a = rakd(0, 1, rakd(0, 0, üres))
     val b = rakd(0, 1, üres)
     val c = rakd(1, 1, üres)
-    val harom = List(a, b, c)
 
     view.AknakeresőKonzolon.írdKiEgymásMellé(
-      harom
+      List(a, b, c)
     )
 
     println
