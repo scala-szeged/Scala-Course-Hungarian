@@ -1,8 +1,4 @@
 
-def render(xs: Any*) = println(xs)
-
-def open = scala.sys.process.Process(Seq("open", "diagram.png")).run()
-
 // Viszkok Tamás megoldása
 
 def töltsd(víz: Int, vödrök: List[Int], részMegoldás: List[Int]): List[List[Int]] = {
@@ -12,15 +8,12 @@ def töltsd(víz: Int, vödrök: List[Int], részMegoldás: List[Int]): List[Lis
     val újMegoldás = vödrök.head :: részMegoldás
 
     if (újMegoldás.sum == víz) {
-      render(újMegoldás, vödrök.tail, részMegoldás); open; readLine
       újMegoldás :: töltsd(víz, vödrök.tail, részMegoldás)
 
-    } else if (újMegoldás.sum < víz) {
-      render(vödrök.tail, újMegoldás, részMegoldás); open; readLine
+    } else if(újMegoldás.sum < víz){
       töltsd(víz, vödrök.tail, újMegoldás) ::: töltsd(víz, vödrök.tail, részMegoldás)
 
     } else {
-      render(vödrök.tail, részMegoldás); open; readLine
       töltsd(víz, vödrök.tail, részMegoldás)
     }
 
@@ -29,7 +22,8 @@ def töltsd(víz: Int, vödrök: List[Int], részMegoldás: List[Int]): List[Lis
   }
 }
 
-val összesVödör = 5 :: 20 :: 25 :: 30 :: 100 :: Nil
+val összesVödör = 11 :: 30 :: 47 :: 31 :: 32 :: 36 :: 3 :: 1 :: 5 ::
+  3 :: 32 :: 36 :: 15 :: 11 :: 46 :: 26 :: 28 :: 1 :: 19 :: 3 :: Nil
 
 val vízMennyisége = 150
 
@@ -47,16 +41,3 @@ println("--- Megoldások")
 megoldások.foreach(println)
 println("--- Számítási idő (milliszekundum)")
 println(befejezés - indulás)
-
-
-
-
-
-összesVödör.combinations(3).toList.filter(_.sum == 150)
-összesVödör.combinations(4).toList.filter(_.sum == 150)
-
-val list = for (i <- (4 to 4))
-  yield összesVödör.combinations(i).toList.filter(
-    _.sum == 150
-  )
-list
