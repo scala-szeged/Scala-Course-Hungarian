@@ -3,8 +3,6 @@ package h.nyolcadik.het
 import model.AknakeresoModel._
 import java.lang.Math.{abs, max, min}
 
-import h.nyolcadik.het.H4nemcommitolni.szomszédok
-
 
 object H3_Aknakereső {
 
