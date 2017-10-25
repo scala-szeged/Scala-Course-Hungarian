@@ -1,7 +1,9 @@
 package h.nyolcadik.het
 
 import model.AknakeresoModel._
-import java.lang.Math.abs
+import java.lang.Math.{abs, max, min}
+
+import h.nyolcadik.het.H4nemcommitolni.szomszédok
 
 
 object H3_Aknakereső {
@@ -25,9 +27,9 @@ object H3_Aknakereső {
     println
 
     view.AknakeresőKonzolon.írdKiEgymásMellé(
-      takardKi(3, 0, takardBeMind(a)),
-      takardKi(3, 0, takardBeMind(b)),
-      takardKi(3, 0, takardBeMind(c))
+      takardBeMind(a),
+      takardBeMind(b),
+      takardBeMind(c)
     )
   }
 
@@ -47,29 +49,38 @@ object H3_Aknakereső {
         }
 
 
-  def takardBeMind(tábla: Tábla): Tábla =
-    tábla
+  def takardBeMind(tábla: Tábla): Tábla = tábla
 
-  def takardKi(kiX: Int, kiY: Int, tábla: Tábla): Tábla = {
+  // --- foldLeft, új ismeret
 
-    def takardKiACellát(kiX: Int, kiY: Int, maszk: Set[(Int, Int)]): Set[(Int, Int)] = {
-      maszk
+  // def foldLeft[A](a: A)(f0: (A, T) => A): A
+  // A - ez a kezdő érték és az eredmény típusa
+  // f0 - függvény (metódus), ami kettő paraméterű:
+  // az 1. paraméter az aktuális eredmény, ami először a kezdőérték
+  // a 2. paraméter a soronkövetkező elem
+  // az általa kiszámolt eredmény a következő f0 híváskor az 1. paraméter lesz
+
+  def szomszédok[A](a: A, cx: Int, cy: Int, tábla: Tábla)(f: (A, Cella, Int, Int) => A): A = {
+    val startX = max(0, cx - 1)
+    val endX = min(tábla.head.size - 1, cx + 1)
+
+    val endY = min(tábla.size - 1, cy + 1)
+    val startY = max(0, cy - 1)
+
+    (startX to endX).foldLeft(a) { (átmenetiA, x) =>
+      (startY to endY).foldLeft(átmenetiA) { (igaziA, y) =>
+        f(igaziA, tábla(y)(x), x, y)
+      }
     }
+  }
 
-    def takardKiASzomszédokat(kiX: Int, kiY: Int, maszk: Set[(Int, Int)]): Set[(Int, Int)] = {
-      maszk
+  def takartSzomszédok(cx: Int, cy: Int, tábla: Tábla): List[(Int, Int)] = {
+    szomszédok(Nil: List[(Int, Int)], cx, cy, tábla) {
+      case (lista, TakartSzám(_), x, y) => (x, y) :: lista
+      case (lista, TakartAkna, x, y) => (x, y) :: lista
+      case (lista, _, _, _) => lista
     }
-
-    val maszk: Set[(Int, Int)] = táblábólMaszk(tábla)
-
-    maszkold(tábla, takardKiACellát(kiX, kiY, maszk))
   }
 
-  private def táblábólMaszk(tábla: Tábla): Set[(Int, Int)] = {
-    Set.empty
-  }
-
-  def maszkold(tábla: Tábla, maszk: Set[(Int, Int)]): Tábla = {
-    tábla
-  }
+  def kitakartAknaSzomszédok(cx: Int, cy: Int, tábla: Tábla): Int = 0
 }
