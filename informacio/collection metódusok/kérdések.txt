@@ -1,0 +1,3 @@
+1. Mik a különbségek a fill és a tabulate metódusok esetében?
+2. Mik a különbségek a partition és a span metódusok esetében?
+2. Mik a különbségek a patch és az updated metódusok esetében?

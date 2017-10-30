@@ -34,7 +34,7 @@ List("a b").map(_.split(" "))
 
 // --- zipWithIndex újra
 
-for {(sor, sorIndex) <- List(6, 7, 8).zipWithIndex} yield (sor, sorIndex)
+for {(elem, index) <- List(6, 7, 8).zipWithIndex} yield index
 
 
 
@@ -46,6 +46,6 @@ val intSetben7 = intSet(7) // A Set tartatlmazza-e a 7 -as számot?
 
 val tupleSet = Set((1, 2), (2, 4), (3, 6))
 val tupleSetben24 = tupleSet(2, 4) // A Set tartatlmazza-e a (2,4) Tupple -t?
-val tupleSet24nélkül = tupleSet - Tuple2(2, 4) // A Set tartatlmazza-e a 3 -as számot?
+val tupleSet24nélkül = tupleSet - Tuple2(2, 4)
 
 

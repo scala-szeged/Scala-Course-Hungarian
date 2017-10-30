@@ -67,7 +67,10 @@ object H3_Aknakereső {
 
     (startX to endX).foldLeft(a) { (átmenetiA, x) =>
       (startY to endY).foldLeft(átmenetiA) { (igaziA, y) =>
-        f(igaziA, tábla(y)(x), x, y)
+        if (x != cx || y != cy)
+          f(igaziA, tábla(y)(x), x, y)
+        else
+          igaziA
       }
     }
   }
@@ -80,5 +83,10 @@ object H3_Aknakereső {
     }
   }
 
-  def kitakartAknaSzomszédok(cx: Int, cy: Int, tábla: Tábla): Int = 0
+  def látszódóSzomszédAknákSzáma(cx: Int, cy: Int, tábla: Tábla): Int = {
+    szomszédok(0, cx, cy, tábla) {
+      case (n, Akna, _, _) => n + 1
+      case (n, _, _, _) => n
+    }
+  }
 }
