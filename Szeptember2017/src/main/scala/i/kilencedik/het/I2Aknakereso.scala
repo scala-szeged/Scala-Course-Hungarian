@@ -20,57 +20,65 @@ object I2Aknakereso {
     val c = rakd(2, 1, üres)
 
     view.AknakeresőKonzolon.írdKiEgymásMellé(
-      a, b, c, c
+      a, b, c, c, a
     )
     println
 
-    val elkezdettC = takardKi(0, 0, takardKi(2, 0, takardBeMind(c)))
+    val jólElkezdettA = takardKi(0, 2, takardBeMind(a))
+    val jólElkezdettC = takardKi(0, 0, takardKi(2, 0, takardBeMind(c)))
     view.AknakeresőKonzolon.írdKiEgymásMellé(
       takardKi(3, 0, takardBeMind(a)),
       takardKi(3, 0, takardBeMind(b)),
       takardKi(3, 0, takardBeMind(c)),
-      elkezdettC
+      jólElkezdettC,
+      jólElkezdettA
     )
-    println
 
+    println
     view.AknakeresőKonzolon.írdKiEgymásMellé(
-      c :: oldMegLépésenként(elkezdettC)
+      a :: oldMegLépésenként(jólElkezdettA)
+    )
+
+    println
+    view.AknakeresőKonzolon.írdKiEgymásMellé(
+      c :: oldMegLépésenként(jólElkezdettC)
     )
   }
 
+  def oldMegLépésenként(kiindulóTábla: Tábla): List[Tábla] = {
+    lépj(List(kiindulóTábla)).reverse
+  }
+
   def lépj(táblák: List[Tábla]): List[Tábla] = {
-    val tábla = táblák.head
-
-    keresd(tábla) match {
-
-      case None =>
-        táblák
-
-      case Some((aknaX, aknaY)) =>
+    val aknák = keresdAzAknákat(táblák.head)
+    val tk2 = aknák.foldLeft(táblák) {
+      case (tábla :: előzőTáblák, (aknaX, aknaY)) =>
         ténylegAknaE(aknaX, aknaY, tábla)
-        val t2 = takardKi(aknaX, aknaY, tábla)
-        val tk = takardKiANemAknákat(aknaX, aknaY, t2 :: táblák)
-        if (vanMégTakartCella(tk.head)) {
-          lépj(tk)
+        takardKi(aknaX, aknaY, tábla) :: tábla :: előzőTáblák
+    }
+    aknák.foldLeft(tk2) {
+      case (tk3, (aknaX, aknaY)) =>
+        val tk4 = takardKiANemAknákat(aknaX, aknaY, tk3)
+        if (vanMégTakartCella(tk4.head)) {
+          lépj(tk4)
         } else {
-          tk
+          tk4
         }
     }
   }
 
-  def keresd(tábla: Tábla): Option[(Int, Int)] = {
-    val ck = cellák(Nil: List[(Int, Int)], tábla) {
-      case (lista, Szám(1), cx, cy) =>
+  def keresdAzAknákat(tábla: Tábla): List[(Int, Int)] = {
+    cellák(Nil: List[(Int, Int)], tábla) {
+      case (lista, Szám(n), cx, cy) if n > 0 =>
         val tszk = takartSzomszédok(cx, cy, tábla)
-        if (1 == tszk.size)
-          tszk.head :: lista
+        if (n == tszk.size)
+          tszk ::: lista
         else
           lista
 
       case (lista, _, _, _) =>
         lista
     }
-    ck.headOption
   }
 
 
@@ -79,15 +87,15 @@ object I2Aknakereso {
       for {(cella, cellaIndex) <- sor.zipWithIndex} yield
         (cella, cellaIndex, sorIndex) match {
 
-      case (_, cx, cy) if cx == rakdX && cy == rakdY =>
-        Akna
+          case (_, cx, cy) if cx == rakdX && cy == rakdY =>
+            Akna
 
-      case (Szám(n), cx, cy) if abs(cx - rakdX) <= 1 && abs(cy - rakdY) <= 1 =>
-        Szám(n + 1)
+          case (Szám(n), cx, cy) if abs(cx - rakdX) <= 1 && abs(cy - rakdY) <= 1 =>
+            Szám(n + 1)
 
-      case (c, _, _) =>
-        c
-    }
+          case (c, _, _) =>
+            c
+        }
 
 
   def szomszédok[A](a: A, cx: Int, cy: Int, tábla: Tábla)(f: (A, Cella, Int, Int) => A): A = {
@@ -141,10 +149,6 @@ object I2Aknakereso {
         f(igaziA, cella, cellaIndex, sorIndex)
       }
     }
-  }
-
-  def oldMegLépésenként(kiindulóTábla: Tábla): List[Tábla] = {
-    lépj(List(kiindulóTábla)).reverse
   }
 
   def vanMégTakartCella(tábla: Tábla): Boolean = {
@@ -251,15 +255,24 @@ object I2Aknakereso {
       }
     }
 
-    val maszk: Set[(Int, Int)] = táblábólMaszk(táblák.head)
+    def nullátTakartKi(x: Int, y: Int, tábla: Tábla): Boolean = tábla(y)(x) match {
+      case TakartSzám(0) => true
+      case _ => false
+    }
 
+
+    val maszk: Set[(Int, Int)] = táblábólMaszk(táblák.head)
     val lista = takardKiASzomszédokat(kiX, kiY)
-    val (újTáblák, _) = lista.foldLeft((táblák, maszk)) { case ((tk, mszk), lépés) =>
-      val újMaszk = mszk - lépés
-      (
-        maszkold(tk.head, újMaszk) :: tk,
-        újMaszk
-      )
+
+    val (újTáblák, _) = lista.foldLeft((táblák, maszk)) { case ((tk, mszk), koordináta) =>
+      val újMaszk = mszk - koordináta
+      if (nullátTakartKi(koordináta._1, koordináta._2, tk.head)) {
+        val újTábla = takardKi(koordináta._1, koordináta._2, tk.head)
+        (újTábla :: tk, újMaszk)
+      } else {
+        val újTábla = maszkold(tk.head, újMaszk)
+        (újTábla :: tk, újMaszk)
+      }
     }
     újTáblák
   }
