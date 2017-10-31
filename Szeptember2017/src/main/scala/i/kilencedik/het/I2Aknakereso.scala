@@ -24,22 +24,24 @@ object I2Aknakereso {
     )
     println
 
-    val betakartC = takardKi(0, 0, takardKi(2, 0, takardBeMind(c)))
+    val elkezdettC = takardKi(0, 0, takardKi(2, 0, takardBeMind(c)))
     view.AknakeresőKonzolon.írdKiEgymásMellé(
       takardKi(3, 0, takardBeMind(a)),
       takardKi(3, 0, takardBeMind(b)),
       takardKi(3, 0, takardBeMind(c)),
-      betakartC
+      elkezdettC
     )
     println
 
     view.AknakeresőKonzolon.írdKiEgymásMellé(
-      c :: oldMegLépésenként(betakartC)
+      c :: oldMegLépésenként(elkezdettC)
     )
   }
 
   def rakd(rakdX: Int, rakdY: Int, tábla: Tábla): Tábla =
-    újTábla(tábla) {
+    for {(sor, sorIndex) <- tábla.zipWithIndex} yield
+      for {(cella, cellaIndex) <- sor.zipWithIndex} yield
+        (cella, cellaIndex, sorIndex) match {
 
       case (_, cx, cy) if cx == rakdX && cy == rakdY =>
         Akna
@@ -50,11 +52,6 @@ object I2Aknakereso {
       case (c, _, _) =>
         c
     }
-
-  def újTábla[A](tábla: Tábla)(f: (Cella, Int, Int) => Cella): Tábla =
-    for {(sor, sorIndex) <- tábla.zipWithIndex} yield
-      for {(cella, cellaIndex) <- sor.zipWithIndex} yield
-        f(cella, cellaIndex, sorIndex)
 
 
   def szomszédok[A](a: A, cx: Int, cy: Int, tábla: Tábla)(f: (A, Cella, Int, Int) => A): A = {
@@ -70,6 +67,26 @@ object I2Aknakereso {
           f(igaziA, tábla(y)(x), x, y)
         else
           igaziA
+      }
+    }
+  }
+
+  def szomszédok[A <: List[Tábla]](a: A, cx: Int, cy: Int)(f: (A, Cella, Int, Int) => A): A = {
+    val táblaAzElején = a.head
+    val startX = max(0, cx - 1)
+    val endX = min(táblaAzElején.head.size - 1, cx + 1)
+
+    val endY = min(táblaAzElején.size - 1, cy + 1)
+    val startY = max(0, cy - 1)
+
+    (startX to endX).foldLeft(a) { (átmenetiA, x) =>
+      (startY to endY).foldLeft(átmenetiA) { (igaziA, y) =>
+        if (x != cx || y != cy) {
+          val tábla = igaziA.head
+          f(igaziA, tábla(y)(x), x, y)
+        } else {
+          igaziA
+        }
       }
     }
   }
@@ -117,33 +134,23 @@ object I2Aknakereso {
     tck > 0
   }
 
-  def csökkentsdASzomszédait(aknaX: Int, aknaY: Int, tábla: Tábla): Tábla =
-    újTábla(tábla) {
-
-      case (Szám(n), cx, cy) if abs(cx - aknaX) <= 1 && abs(cy - aknaY) <= 1 =>
-        Szám(max(0, n - 1))
-
-      case (c, _, _) =>
-        c
-    }
-
   def látszódóSzomszédAknákSzáma(cx: Int, cy: Int, tábla: Tábla): Int = {
     szomszédok(0, cx, cy, tábla) {
-      case (n, Akna, x, y) => n + 1
+      case (n, Akna, _, _) => n + 1
       case (n, _, _, _) => n
     }
   }
 
-  def takardKiANemAknákat(aknaX: Int, aknaY: Int, tábla: Tábla): Tábla = {
-    szomszédok(tábla, aknaX, aknaY, tábla) {
-      case (t, Szám(n), x, y) =>
-        if (n == látszódóSzomszédAknákSzáma(x, y, t))
-          takardKiASzomszédokat(x, y, t)
+  def takardKiANemAknákat(aknaX: Int, aknaY: Int, táblák: List[Tábla]): List[Tábla] = {
+    szomszédok(táblák, aknaX, aknaY) {
+      case (tk, Szám(n), x, y) =>
+        if (n == látszódóSzomszédAknákSzáma(x, y, tk.head))
+          takardKiASzomszédokat(x, y, tk)
         else
-          t
+          tk
 
-      case (t, _, _, _) =>
-        t
+      case (tk, _, _, _) =>
+        tk
     }
   }
 
@@ -158,14 +165,11 @@ object I2Aknakereso {
       case Some((aknaX, aknaY)) =>
         ténylegAknaE(aknaX, aknaY, tábla)
         val t2 = takardKi(aknaX, aknaY, tábla)
-        val t3 = takardKiANemAknákat(aknaX, aknaY, t2)
-        if (vanMégTakartCella(t2)) {
-          lépj(
-            //csökkentsdASzomszédait(aknaX, aknaY, t3) :: táblák
-            t3 :: táblák
-          )
+        val tk = takardKiANemAknákat(aknaX, aknaY, t2 :: táblák)
+        if (vanMégTakartCella(tk.head)) {
+          lépj(tk)
         } else {
-          táblák
+          tk
         }
     }
   }
@@ -219,34 +223,44 @@ object I2Aknakereso {
     maszkold(tábla, takardKiACellát(kiX, kiY, maszk))
   }
 
-  def takardKiASzomszédokat(kiX: Int, kiY: Int, tábla: Tábla): Tábla = {
+  def takardKiASzomszédokat(kiX: Int, kiY: Int, táblák: List[Tábla]): List[Tábla] = {
 
-    def takardKiASzomszédokat(kiX: Int, kiY: Int, maszk: Set[(Int, Int)]): Set[(Int, Int)] = {
+    def takardKiASzomszédokat(kiX: Int, kiY: Int): List[(Int, Int)] = {
+      val tábla = táblák.head
       val startX = max(0, kiX - 1)
       val endX = min(tábla.head.size - 1, kiX + 1)
 
       val endY = min(tábla.size - 1, kiY + 1)
       val startY = max(0, kiY - 1)
 
-      (startX to endX).foldLeft(maszk) { (mx, x) =>
-        (startY to endY).foldLeft(mx) { (my, y) =>
-          takardKiACellát(x, y, my)
+      (startX to endX).foldLeft(Nil: List[(Int, Int)]) { (listaX, x) =>
+        (startY to endY).foldLeft(listaX) { (listaY, y) =>
+          if (x != kiX || y != kiY)
+            takardKiACellát(x, y, listaY)
+          else
+            listaY
         }
       }
     }
 
-    def takardKiACellát(kiX: Int, kiY: Int, maszk: Set[(Int, Int)]): Set[(Int, Int)] = {
-      val maszkoltTábla = maszkold(tábla, maszk)
-
-      maszkoltTábla(kiY)(kiX) match {
-        case _: TakartCella => maszk - Tuple2(kiX, kiY)
-        case _ => maszk
+    def takardKiACellát(kiX: Int, kiY: Int, lista: List[(Int, Int)]): List[(Int, Int)] = {
+      táblák.head(kiY)(kiX) match {
+        case _: TakartCella => Tuple2(kiX, kiY) :: lista
+        case _ => lista
       }
     }
 
-    val maszk: Set[(Int, Int)] = táblábólMaszk(tábla)
+    val maszk: Set[(Int, Int)] = táblábólMaszk(táblák.head)
 
-    maszkold(tábla, takardKiASzomszédokat(kiX, kiY, maszk))
+    val lista = takardKiASzomszédokat(kiX, kiY)
+    val (újTáblák, _) = lista.foldLeft((táblák, maszk)) { case ((tk, mszk), lépés) =>
+      val újMaszk = mszk - lépés
+      (
+        maszkold(tk.head, újMaszk) :: tk,
+        újMaszk
+      )
+    }
+    újTáblák
   }
 
   def táblábólMaszk(tábla: Tábla): Set[(Int, Int)] = {
