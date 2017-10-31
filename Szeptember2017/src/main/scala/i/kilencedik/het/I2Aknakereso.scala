@@ -38,6 +38,42 @@ object I2Aknakereso {
     )
   }
 
+  def lépj(táblák: List[Tábla]): List[Tábla] = {
+    val tábla = táblák.head
+
+    keresd(tábla) match {
+
+      case None =>
+        táblák
+
+      case Some((aknaX, aknaY)) =>
+        ténylegAknaE(aknaX, aknaY, tábla)
+        val t2 = takardKi(aknaX, aknaY, tábla)
+        val tk = takardKiANemAknákat(aknaX, aknaY, t2 :: táblák)
+        if (vanMégTakartCella(tk.head)) {
+          lépj(tk)
+        } else {
+          tk
+        }
+    }
+  }
+
+  def keresd(tábla: Tábla): Option[(Int, Int)] = {
+    val ck = cellák(Nil: List[(Int, Int)], tábla) {
+      case (lista, Szám(1), cx, cy) =>
+        val tszk = takartSzomszédok(cx, cy, tábla)
+        if (1 == tszk.size)
+          tszk.head :: lista
+        else
+          lista
+
+      case (lista, _, _, _) =>
+        lista
+    }
+    ck.headOption
+  }
+
+
   def rakd(rakdX: Int, rakdY: Int, tábla: Tábla): Tábla =
     for {(sor, sorIndex) <- tábla.zipWithIndex} yield
       for {(cella, cellaIndex) <- sor.zipWithIndex} yield
@@ -107,21 +143,6 @@ object I2Aknakereso {
     }
   }
 
-  def keresd(tábla: Tábla): Option[(Int, Int)] = {
-    val ck = cellák(Nil: List[(Int, Int)], tábla) {
-      case (lista, Szám(1), cx, cy) =>
-        val tszk = takartSzomszédok(cx, cy, tábla)
-        if (1 == tszk.size)
-          tszk.head :: lista
-        else
-          lista
-
-      case (lista, _, _, _) =>
-        lista
-    }
-    ck.headOption
-  }
-
   def oldMegLépésenként(kiindulóTábla: Tábla): List[Tábla] = {
     lépj(List(kiindulóTábla)).reverse
   }
@@ -151,26 +172,6 @@ object I2Aknakereso {
 
       case (tk, _, _, _) =>
         tk
-    }
-  }
-
-  def lépj(táblák: List[Tábla]): List[Tábla] = {
-    val tábla = táblák.head
-
-    keresd(tábla) match {
-
-      case None =>
-        táblák
-
-      case Some((aknaX, aknaY)) =>
-        ténylegAknaE(aknaX, aknaY, tábla)
-        val t2 = takardKi(aknaX, aknaY, tábla)
-        val tk = takardKiANemAknákat(aknaX, aknaY, t2 :: táblák)
-        if (vanMégTakartCella(tk.head)) {
-          lépj(tk)
-        } else {
-          tk
-        }
     }
   }
 
