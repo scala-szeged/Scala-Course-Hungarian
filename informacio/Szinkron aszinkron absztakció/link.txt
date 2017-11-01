@@ -1,0 +1,5 @@
+g.hetedik.het package -ben a G2.1 Szinkron aszinkron absztakció nevű fájlban van a példa
+
+Itt található a teljes könvy legálisan tetölthető formában:
+https://leanpub.com/fpmortals/read
+
