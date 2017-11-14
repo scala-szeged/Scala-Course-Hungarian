@@ -23,20 +23,20 @@ def eredmény(gurítások: List[Int]) =
 val egySpareNemKetto23 = List(5, 5, 5, 3)
 eredmény(egySpareNemKetto23)
 
-val ügyetlen = List(1, 2, 3, 4, 5)
-eredmény(ügyetlen)
+val kettoSpareNemNegy36 = List(5, 5, 5, 5, 3)
+eredmény(kettoSpareNemNegy36)
 
-val spare = List(5, 5, 3)
-eredmény(spare)
+val ügyetlen15 = List(1, 2, 3, 4, 5)
+eredmény(ügyetlen15)
 
-val spare21 = List(5, 5, 5, 1)
-eredmény(spare21)
+val spare16 = List(5, 5, 3)
+eredmény(spare16)
 
-val strike = List(10, 3, 4)
-eredmény(strike)
+val strike24 = List(10, 3, 4)
+eredmény(strike24)
 
-val tökéletesJáték = List.fill(12)(10)
-eredmény(tökéletesJáték)
+val tökéletesJáték300 = List.fill(12)(10)
+eredmény(tökéletesJáték300)
 
 val csak299 = List.fill(11)(10) ::: List(9)
 eredmény(csak299)
