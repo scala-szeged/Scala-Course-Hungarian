@@ -1,6 +1,49 @@
+
+// Az alábbi figyelmeztetés kikapcsolása
+// "Advanced language feature: postfix operation notation"
+// FONTOS: Ctrl + B -vel a definícióra ugrani és
+// elolvasni, hogy akkor minek van ez a feature egyáltalán?
+import scala.language.postfixOps
+
+// Ft és más pénznem helyes kiírása
 import java.text.NumberFormat
+
+// Együttműködik a NumberFormat -tal
 import java.util.Locale
 
+val százFt = NumberFormat.getCurrencyInstance(
+  new Locale("hu", "HU")
+).format(100)
+
+
+
+
+import java.time.LocalDate
+
+val ma = LocalDate.now
+val kétNappalEzelőtt = ma.minusDays(2)
+
+
+
+
+object ezelőtt
+
+// Int -et konvertál napLesz típusúra, amely
+// rendelkezik az alábbi metódusokkal
+implicit class napLesz(n: Int) {
+  def nappal(e: ezelőtt.type) = ma.minusDays(n)
+
+  private def ma = LocalDate.now
+}
+
+val ötNappalEzelőtt = 5 nappal ezelőtt
+
+
+
+
+// "unary_+" a + definíciója a +ÁFA esetben
+// olyan mint amikor +1
+// illetve -1 szerepel megelőző szám illetve kifejezés nélkül
 object ÁFA {
   def unary_+ = PluszÁFA
 }
@@ -8,36 +51,20 @@ object ÁFA {
 object PluszÁFA
 
 implicit class Pénzösszeg(val n: Double) {
-  def Ft = Forint(n)
-
-  def Ft(pluszÁFA: PluszÁFA.type) = Forint(n * 1.27)
-
-  def +(áfa: ÁFA.type) = Forint(n * 1.27)
+  def Ft(pluszÁFA: PluszÁFA.type) = Pénzösszeg(n * 1.27)
 }
 
-//import java.util.Currency
-case class Forint(override val n: Double) extends Pénzösszeg(n) {
-  override def toString: String = NumberFormat.getCurrencyInstance(new Locale("hu", "HU")).format(n)
-}
-
-100 Ft
-
-(100 Ft)
-100 Ft;
 100 Ft +ÁFA
-(100 Ft) + ÁFA
 
-object fizetés {
-  def eltartottakSzáma = ???
 
-  def bruttó(pénzösszeg: Pénzösszeg): Pénzösszeg = {
 
-    // https://www.hrportal.hu/berkalkulator_2017.html?edt_brutto=100000&edt_elt=0&edt_gyerekek=0&edt_egyedulnevel=0&edt_frisshazas=0&edt_kedvezmeny=0&edt_munkaido=40
-    val évesBruttó = pénzösszeg.n * 12
 
-    pénzösszeg.n
-  }
+// s" ... " lehetővé teszi, hogy a string belsejében
+// hivatkozni tudjunk az n konstansra az elé $ jelt írva
+implicit class Százalék(val n: Double) {
+  override def toString: String = s"$n %"
+
+  // a % metódust nem lehet felüldefiniálni az
+  // Int és a Double típusra sem
+  def %% = this
 }
-
-// A Scala fordító lefordítja
-fizetés bruttó 100000 Ft
