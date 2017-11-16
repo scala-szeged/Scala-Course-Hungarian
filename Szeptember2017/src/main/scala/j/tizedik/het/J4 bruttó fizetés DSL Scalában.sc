@@ -61,4 +61,4 @@ object fizetés {
 fizetés bruttó 100000 Ft
 
 
-// Lásd: https://www.hrportal.hu/berkalkulator_2017.html?edt_brutto=100000&edt_elt=0&edt_gyerekek=0&edt_egyedulnevel=0&edt_frisshazas=0&edt_kedvezmeny=0&edt_munkaido=40
+// Lásd: http://berkalkulator.hu/berkalkulator-2018/100000-brutto-fizetes
