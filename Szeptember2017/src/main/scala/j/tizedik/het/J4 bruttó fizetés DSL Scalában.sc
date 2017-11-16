@@ -65,7 +65,7 @@ object nettóra_átszámítva {
       havi_összes_levonás_a_bruttó_bérből +
         havi_összes_munkaadói_járulék
 
-    val munkaadóösszeshaviköltsége =
+    val munkaadó_összes_havi_költsége =
       pénzösszeg +
         havi_összes_munkaadói_járulék
 
