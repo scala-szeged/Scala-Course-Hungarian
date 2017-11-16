@@ -5,60 +5,80 @@ import java.util.Locale
 implicit class Százalék(val n: Double) {
   override def toString: String = s"$n %"
 
-  def %% = this
+  def százalék = this
+
+  def sz = százalék
 
   def +(sz: Százalék) = Százalék(n + sz.n)
 }
 
-implicit class Pénzösszeg(val n: Double) {
+implicit class Fizetés(val n: Double) {
   def Ft = Forint(n)
 
-  def -(sz: Százalék) = n * (1 - sz.n / 100)
-  def +(sz: Százalék) = n * (1 + sz.n / 100)
+  def Eur = Euro(n)
+
+  def fizetésDoubleból(n: Double): Fizetés = {
+    println
+    println("ismeretlen típusú pénzösszeget hoztunk létre")
+    println(Thread.currentThread().getStackTrace.take(6).mkString("\n  at "))
+    new Fizetés(n)
+  }
+
+  def -(sz: Százalék) = fizetésDoubleból(n * (1 - sz.n / 100))
+
+  def +(sz: Százalék) = fizetésDoubleból(n * (1 + sz.n / 100))
 }
 
-//import java.util.Currency
-case class Forint(override val n: Double) extends Pénzösszeg(n) {
+case class Forint(override val n: Double) extends Fizetés(n) {
+  override def fizetésDoubleból(n: Double): Fizetés = Forint(n)
+
   override def toString: String = NumberFormat.getCurrencyInstance(new Locale("hu", "HU")).format(n)
 }
 
-object fizetés {
-  def bruttó(pénzösszeg: Pénzösszeg): Pénzösszeg = {
+case class Euro(override val n: Double) extends Fizetés(n) {
+  override def fizetésDoubleból(n: Double): Fizetés = Euro(n)
 
-    val munkaerőPiacijárulék = 1.5 %%
-    val egészségbiztosításijárulék = 7.0 %%
-    val nyugdíjjárulék = 10.0 %%
-    val számítottSzja = 15.0 %%
+  override def toString: String = NumberFormat.getCurrencyInstance(new Locale("de", "DE")).format(n)
+}
 
-    val haviösszeslevonásabruttóbérből =
-      munkaerőPiacijárulék +
-        egészségbiztosításijárulék +
-        nyugdíjjárulék +
-        számítottSzja
+object nettóra_átszámítva {
+  def bruttó(pénzösszeg: Fizetés): Fizetés = {
 
-    val szociálishozzájárulásiadó = 22.0 %%
-    val szakképzésihozzájárulás = 1.5 %%
-    val haviösszesmunkaadóijárulék =
-      szociálishozzájárulásiadó +
-        szakképzésihozzájárulás
+    val munkaerő_piaci_járulék = 1.5 százalék
+    val egészségbiztosítási_járulék = 7 sz
+    val nyugdíj_járulék = 10 százalék
+    val számított_SZJA = 15 százalék
 
-    val összesenhavontaazállamnakfizetendő =
-      haviösszeslevonásabruttóbérből +
-    haviösszesmunkaadóijárulék
+    val havi_összes_levonás_a_bruttó_bérből =
+      munkaerő_piaci_járulék +
+        egészségbiztosítási_járulék +
+        nyugdíj_járulék +
+        számított_SZJA
+
+    val szociális_hozzájárulási_adó = 22 százalék
+    val szakképzési_hozzájárulás = 1.5 százalék
+    val havi_összes_munkaadói_járulék =
+      szociális_hozzájárulási_adó +
+        szakképzési_hozzájárulás
+
+    val összesen_havonta_az_államnak_fizetendő =
+      havi_összes_levonás_a_bruttó_bérből +
+        havi_összes_munkaadói_járulék
 
     val munkaadóösszeshaviköltsége =
       pénzösszeg +
-    haviösszesmunkaadóijárulék
+        havi_összes_munkaadói_járulék
 
 
-    println(haviösszeslevonásabruttóbérből)
-
-    pénzösszeg - haviösszeslevonásabruttóbérből
+    pénzösszeg - havi_összes_levonás_a_bruttó_bérből
   }
 }
 
-// A Scala fordító lefordítja
-fizetés bruttó 100000 Ft
+// A Scala fordító ezt is lefordítja, de a Ft metódust csak a legvégén hívja meg a Scala Worksheet
+nettóra_átszámítva bruttó 100000 Ft
+
+// Ez viszont az IntelliJ szerint is jó és az Eur metódust hamarabb hívja mint a bruttó metódust
+nettóra_átszámítva bruttó 100000.Eur
 
 
 // Lásd: http://berkalkulator.hu/berkalkulator-2018/100000-brutto-fizetes
