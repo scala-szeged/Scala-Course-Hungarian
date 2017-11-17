@@ -1,3 +1,4 @@
+import scala.language.postfixOps
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -15,14 +16,16 @@ implicit class Pénzösszeg(val n: Double) {
   def +(áfa: ÁFA.type) = Forint(n * 1.27)
 }
 
-//import java.util.Currency
 case class Forint(override val n: Double) extends Pénzösszeg(n) {
   override def toString: String = NumberFormat.getCurrencyInstance(new Locale("hu", "HU")).format(n)
 }
 
-100 Ft
+1000000 Ft
 
-(100 Ft)
-100 Ft;
-100 Ft +ÁFA
-(100 Ft) + ÁFA
+val első_száz = 100 Ft
+val első_száz_plusz_ÁFA = első_száz + ÁFA
+
+val második_száz_plusz_ÁFA = 100 Ft +ÁFA
+val harmadik_száz_plusz_ÁFA = (100 Ft) + ÁFA
+
+

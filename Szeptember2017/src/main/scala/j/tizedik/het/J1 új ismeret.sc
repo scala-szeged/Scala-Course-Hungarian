@@ -52,6 +52,8 @@ object PluszÁFA
 
 implicit class Pénzösszeg(val n: Double) {
   def Ft(pluszÁFA: PluszÁFA.type) = Pénzösszeg(n * 1.27)
+
+  override def toString: String = s"Pénzösszeg($n)"
 }
 
 100 Ft +ÁFA

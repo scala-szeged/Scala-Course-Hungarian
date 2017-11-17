@@ -1,6 +1,6 @@
+import scala.language.postfixOps
 import java.time.LocalDate
 
-import scala.language.postfixOps
 
 object ezelőtt
 
@@ -27,5 +27,7 @@ case class from(n: Int) extends napLesz(n) {
 
 val ötNappalEzelőtt = 5 nappal ezelőtt
 val ötNappalEzután = 5 nappal ezután
-val fiveDaysAgo = 3 days ago
-val fiveDaysFromNow = 3 days from now
+
+val twoDaysFromNow = 2 days from now
+val twoDaysAgo = 2 days ago
+
