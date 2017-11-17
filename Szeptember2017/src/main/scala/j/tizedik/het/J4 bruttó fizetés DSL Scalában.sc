@@ -42,7 +42,7 @@ case class Euro(override val n: Double) extends Fizetés(n) {
 }
 
 object nettóra_átszámítva {
-  def bruttó(pénzösszeg: Fizetés): Fizetés = {
+  def bruttó(bruttó_bér: Fizetés): Fizetés = {
 
     val munkaerő_piaci_járulék = 1.5 százalék
     val egészségbiztosítási_járulék = 7 sz
@@ -66,11 +66,11 @@ object nettóra_átszámítva {
         havi_összes_munkaadói_járulék
 
     val munkaadó_összes_havi_költsége =
-      pénzösszeg +
+      bruttó_bér +
         havi_összes_munkaadói_járulék
 
 
-    pénzösszeg - havi_összes_levonás_a_bruttó_bérből
+    bruttó_bér - havi_összes_levonás_a_bruttó_bérből
   }
 }
 
