@@ -1,0 +1,197 @@
+Részletes Case studie -k a hivatalos oldalon
+https://www.lightbend.com/resources/case-studies-and-stories#filter:scala
+
+Intel, Samsung, NCL, Verizon, Driver, Zalando, Swisscom, PayPal, credit karma, twitter
+LinkedIn, Hootsuite, Nitro, Coursera, the guardian, Databricks, Walmart, wehkampl.nl, William Hill, Unicredit
+dwango, Barclays, Tomax, The Huffington Post, Gilt, white pages, ticket fly, wix.com, paycasso, kifi
+Xebia, airbnb, valtech, csc, CCAD, janrain, LucidChart, Klout, sharethrough, ViridityEnergy
+Yap Studios, tapad, Heluna, CakeSolutions, BoldRadius, simpleBI, 47, HolidayCheck.com, PrimeTalk, flowdock
+abiquo, BeamStream, Mejsla + BrandAirport
+
+
+
+
+http://scala.epfl.ch advisory board tagok
+
+IBM
+Verizon
+Goldman Sachs
+SAP
+TAPAD https://www.tapad.com
+47 https://www.47deg.com
+Magyarországon kik használják? (Ez nem teljes lista.)
+Morgan Stanley https://www.linkedin.com/jobs/morgan-stanley-scala-jobs
+Emarsys
+samebug https://samebug.io/about-us https://blog.codacy.com/6-products-every-scala-developer-should-use-7a4b69ca7d36
+MSCI http://careers.msci.com/ShowJob/Id/1049049/Scala-Developer
+Wanari http://www.wanari.com
+Hortonworks https://hortonworks.com/search-results/?cx=016128568265101940800%3Ail-ht2a6w-u&search=scala
+Digital Asset, https://www.google.hu/search?q=scala+site%3Adigitalasset.com
+Melyik cloud szolgáltató támogatja?
+Azure https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-data-science-process-scala-walkthrough
+Amazon AWS http://docs.aws.amazon.com/codebuild/latest/userguide/sample-scala-hw.html
+Heroku https://devcenter.heroku.com/articles/getting-started-with-scala#introduction
+OpenShift https://hub.openshift.com/quickstarts/196-scala
+Cloud Foundry https://www.cloudfoundry.org/cloud-foundry-now-supporting-scala/
+Google App Engine https://cloud.google.com/appengine/kb/
+
+
+
+
+github.com -on néhány szervezet és cég (Ez nem teljes lista.)
+
+UK TAX Office, https://github.com/hmrc
+Awesome Scala https://github.com/lauris/awesome-scala
+Li Haoyi https://github.com/lihaoyi?utf8=✓&tab=repositories&q=&type=&language=scala http://www.lihaoyi.com/hands-on-scala-js/ https://github.com/scala-js?utf8=✓&q=&type=source&language=scala
+Mozilla https://github.com/mozilla?utf8=✓&q=&type=&language=scala
+apache.org https://github.com/apache?utf8=✓&q=&type=&language=scala
+Twitter https://github.com/twitter?language=scala
+ThoughtWorks.com https://github.com/ThoughtWorksInc?utf8=%E2%9C%93&q=&type=source&language=scala
+Workday https://workday.github.io/pages/Scala/
+Zalando https://github.com/zalando?language=scala https://github.com/zalando-incubator?language=scala
+Lunatech, Hollandia, https://github.com/lunatech-labs?language=scala
+OUTR Technologies, Egyesült Államok https://github.com/outr?utf8=✓&q=&type=source&language=scala
+scalacourses.com https://github.com/mslinn?utf8=%E2%9C%93&tab=repositories&q=&type=source&language=scala https://www.scalacourses.com
+Scala meetup -ok
+meetup.com 609 Scala meetup https://www.meetup.com/topics/scala/
+(összehasonlításképpen 59 Groovy meetup https://www.meetup.com/topics/groovy/ 921 Ruby meetup https://www.meetup.com/topics/ruby/ 740 C# meetup https://www.meetup.com/topics/csharp/ és 1837 Java meetup https://www.meetup.com/topics/java/ )
+Könyvek
+O'Reilly https://ssearch.oreilly.com/?q=scala https://www.safaribooksonline.com/search/?query=scala
+Packt https://www.packtpub.com/all?search=scala
+Manning https://www.google.hu/search?client=safari&rls=en&q=scala+site:https://www.manning.com&ie=UTF-8&oe=UTF-8&gfe_rd=cr&ei=mzf2WOP0B8vv8Ae1vLmoCg
+Részletesen lásd a Scala könyvek wiki lapon
+Cikkek Scala -ról
+DZone https://www.google.hu/search?client=safari&rls=en&q=scala+site:https://dzone.com&ie=UTF-8&oe=UTF-8&gfe_rd=cr&ei=YDL2WKHnGuPW8gePo7n4AQ
+InfoQ https://www.infoq.com/scala/
+Java Code Geeks https://www.javacodegeeks.com/?s=scala
+
+
+
+
+Aggregated all answers in alphabetical order. (https://www.quora.com/What-startups-or-tech-companies-are-using-Scala)
+
+Apple: Apple job posting for Scala and the Play Framework
+AOL(https://aol.github.io)
+http://azavea.com
+Archive.is - webpage capture
+Basefarm (basefarm.no)
+BazuSports (bazusports.com)
+bizo.com
+BSkyB
+Boundary.com
+Blend Labs (http://blendlabsinc.com/)
+Box (Simple Online Collaboration: Online File Storage, FTP Replacement, Team Workspaces)
+Clari (Sales Forecasting Platform - Clari)
+CloudPhysics (www.cloudphysics.com)
+Chronotrack Systems (www.chronotracksystems.com)
+Coursera (https://building.coursera.org/blog/2016/10/24/my-summer-internship-at-coursera/ ... Scala, which the whole backend of Coursera is built in ...)
+Digital Reasoning Systems (http://www.digitalreasoning.com/)
+DireWolfDigital.com
+Equidate (Stock Market for Private Companies)
+EatingWell
+egraphs.com
+eHarmony
+Fashionbase (www.fashionbase.com)
+Firebase (www.firebase.com)
+flipkart.com
+FortyTwo (42go.com)
+Foursquare
+Gaiam.com
+Gawker.com
+http://tech.gawker.com/5905359/m...
+Giganews
+Gilt
+http://tech.gilt.com/post/232914...
+Global Healthcare Exchange (ghx.com)
+GoCatch.com
+Gravity.com
+Grip (grabgrip.com)
+http://twitter.com/#!/wadearnold...
+HealthExpense.com - Home
+HMRC (HM Revenue & Customs), UK TAX office, https://github.com/hmrc
+HSBC
+Innovation Games (InnoGames, Hamburg) https://www.innogames.com/de/karriere/offene-positionen/#jobs:Development
+InConcert - http://i6.inconcertcc.com
+kaChing
+Klout
+Does Klout use the Play Framework?
+LinkedIn.com
+http://www.scala-lang.org/node/6436
+LivingSocial.com
+Localytics.com
+Locus Development (locusdev.net)
+Loyal3
+Meetup
+MFG Labs
+newBrandAnalytics
+Nest
+http://www.marketwired.com/press...
+Nitro (http://www.nitrocloud.com)
+Nezasa (http://www.nezasa.com)
+Nokia https://github.com/nokia?language=scala&utf8=✓
+Novell
+o2 Telphonica
+Open Bank Project https://demo.openbankproject.com
+OPOWER.com
+Ooyala
+Orbeon Forms
+patterninsight.com
+Pongr
+Pozitron
+Quora
+Is the Quora team considering adopting Scala? Why?
+qwallet.com
+Qwiki
+http://blog.qwiki.com/2011/06/28...
+Rally Health
+RememberTheMilk
+http://www.rememberthemilk.com/a...
+Recombine http://www.recombine.com
+Redmart Online Grocery Shopping - Groceries Delivery Singapore
+ReportGrid.com
+SAP
+Seesmic
+sendoutcards.com
+Serendip.me
+Simple
+What languages and frameworks is Simple built with?
+SocialMedia.com
+https://softwaremill.com
+Sony Pictures Imageworks
+http://Soundcloud.com: From a monolithic Ruby on Rails app to the JVM
+SpotInfluence.com
+StackMob.com
+StreetLend.com
+Stride - Agile Software Development Consulting in NYC | Stride
+Stride Health
+StumbleUpon.com
+https://groups.google.com/forum/...
+Sumo Logic
+Tally - The Smart Way to Manage Your Credit Cards
+Tapad.com https://www.telenor.com/tapad-global-engineering-team-staffing-up-new-oslo-hub/
+Teads
+Telenor https://www.telenor.com/tapad-global-engineering-team-staffing-up-new-oslo-hub/
+TheNewMotion.com
+ThoughtWorks.com https://github.com/ThoughtWorksInc?language=scala
+TrueAccord : Get to financial safe ground
+Twitter.com
+http://www.artima.com/scalazine/...
+Tumblr.com
+http://news.ycombinator.com/item...
+UBS
+UK Guardian
+Veact
+Versal Group http://engineering.versal.com/
+Vidivici.com
+VMware
+wealthfront.com
+Wibidata http://www.wibidata.com/
+Xerox
+Yammer
+Zaptravel http://www.zaptravel.com/
+zeebox
+Walmart (https://blog.redelastic.com/transitioning-to-scala-d1818f25b2b7)
+Wealthminder (http://wealthminder.com)
+WebPageAnalyse http://www.webpageanalyse.com
+Indix - https://indix.com
+
