@@ -6,14 +6,30 @@ import model.AknakeresoModel._
 
 /*
 Ötletek:
-
 colllect - szomszédok
 concat - lépj átszervezése: ne Táblák, csak Tábla legyen, amiket visszaadnak, azokat concat -tal egybe fűzhetjük
 exists - Tábla.cellák bevezetésekor a vanMégTakartCella átszervezhető exists -re
 filter - szomszédok mint collection bevezetésekor takartSzomszédok átszervezhető filter -re
+intersect - takartSzomszédok
+isEmpty - vanMégTakartCella
+partition - Tábla.cellák bevezetésekor a takart és a nem takart cellák mint collection -ök előállítására
+range - startX to endX helyett
+updated - több helyen használható, talán sehol sem célszerű
 
+
+Példát csináltam rá:
+foldRight - ezek a foldLeft -ek lecserélhetőek foldRight -ra
+map - for + yield lecserélhető rá
 fill - üres tábla előállítása
 tabulate - rakd
+
+
+Már használatban volt:
+foldLeft
+head
+mkString a kiíratáskor
+reverse
+zipWithIndex
  */
 object K2Aknakereso {
 
@@ -59,8 +75,8 @@ object K2Aknakereso {
 
   def lépj(táblák: Táblák): Táblák = {
     val aknák = keresdAzAknákat(táblák.head)
-    val tk2 = aknák.foldLeft(táblák) {
-      case (tábla :: előzőTáblák, (aknaX, aknaY)) =>
+    val tk2 = aknák.foldRight(táblák) {
+      case ((aknaX, aknaY), tábla :: előzőTáblák) =>
         ténylegAknaE(aknaX, aknaY, tábla)
         takardKi(aknaX, aknaY, tábla) :: tábla :: előzőTáblák
     }
