@@ -5,6 +5,13 @@ import java.lang.Math.{abs, max, min}
 import model.AknakeresoModel._
 
 /*
+Példát csináltam rá:
+foldRight - ezek a foldLeft -ek lecserélhetőek foldRight -ra
+map - for + yield lecserélhető rá
+fill - üres tábla előállítása
+tabulate - rakd
+
+
 Ötletek:
 colllect - szomszédok
 concat - lépj átszervezése: ne Táblák, csak Tábla legyen, amiket visszaadnak, azokat concat -tal egybe fűzhetjük
@@ -15,13 +22,6 @@ isEmpty - vanMégTakartCella
 partition - Tábla.cellák bevezetésekor a takart és a nem takart cellák mint collection -ök előállítására
 range - startX to endX helyett
 updated - több helyen használható, talán sehol sem célszerű
-
-
-Példát csináltam rá:
-foldRight - ezek a foldLeft -ek lecserélhetőek foldRight -ra
-map - for + yield lecserélhető rá
-fill - üres tábla előállítása
-tabulate - rakd
 
 
 Már használatban volt:
