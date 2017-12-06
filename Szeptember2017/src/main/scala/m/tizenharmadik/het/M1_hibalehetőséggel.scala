@@ -1,6 +1,6 @@
 package m.tizenharmadik.het
 
-object M1 extends App {
+object M1_hibalehetőséggel extends App {
 
 
   class Készülék(blueToothId: Long)
