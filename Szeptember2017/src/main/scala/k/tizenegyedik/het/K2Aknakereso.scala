@@ -35,9 +35,7 @@ object K2Aknakereso {
 
   def main(args: Array[String]): Unit = {
 
-    val üres = List.fill(3) {
-      List.fill(5)(Szám(0))
-    }
+    val üres = List.tabulate(3, 5) { (_, _) => Szám(0) }
 
     val a = rakd(0, 0, rakd(1, 0, rakd(4, 2, üres)))
     val b = rakd(0, 1, üres)
