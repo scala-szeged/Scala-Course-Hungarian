@@ -23,26 +23,26 @@ object M1_hibalehetőséggel extends App {
   case class Karbantartás(készülék: Készülék, beteg: Beteg) extends Akció
 
 
-  case class Készülékek(készlet: Set[Készülék] = Set(), kiadva: Set[Készülék] = Set(), javításon: Set[Készülék] = Set()) {
+  case class Nyilvántartás(készlet: Set[Készülék] = Set(), kiadva: Set[Készülék] = Set(), javításon: Set[Készülék] = Set()) {
 
-    def csináld(akciók: Akció*): Készülékek = csináld(akciók.toList)
+    def csináld(akciók: Akció*): Nyilvántartás = csináld(akciók.toList)
 
-    def csináld(akciók: List[Akció]): Készülékek = akciók match {
+    def csináld(akciók: List[Akció]): Nyilvántartás = akciók match {
       case Nil => this
-      case ÚjKészülékBekerülés(k) :: ak => Készülékek(készlet + k, javításon, kiadva).csináld(ak)
+      case ÚjKészülékBekerülés(k) :: ak => Nyilvántartás(készlet + k, javításon, kiadva).csináld(ak)
     }
   }
 
   assert(
-    Készülékek().csináld(ÚjKészülékBekerülés(Hőmérő(1)))
-      == Készülékek(készlet = Set(Hőmérő(1)))
+    Nyilvántartás().csináld(ÚjKészülékBekerülés(Hőmérő(1)))
+      == Nyilvántartás(készlet = Set(Hőmérő(1)))
   )
 
   assert(
-    Készülékek(
+    Nyilvántartás(
       készlet = Set(Hőmérő(1)), kiadva = Set(VérnyomásMérő(2)), javításon = Set(VércukorMérő(3))
     ).csináld(ÚjKészülékBekerülés(Ekg(4)))
 
-      == Készülékek(készlet = Set(Hőmérő(1), Ekg(4)))
+      == Nyilvántartás(készlet = Set(Hőmérő(1), Ekg(4)), kiadva = Set(VérnyomásMérő(2)), javításon = Set(VércukorMérő(3)))
   )
 }

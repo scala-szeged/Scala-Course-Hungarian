@@ -34,7 +34,8 @@ object M2_típusos_programozás extends App {
 
     def csináld(akciók: Akció*): Nyilvántartás = csináld(akciók.toList)
 
-    def csináld(akciók: List[Akció]): Nyilvántartás = akciók match {
+    @annotation.tailrec
+    private def csináld(akciók: List[Akció]): Nyilvántartás = akciók match {
       case Nil =>
         this
 
@@ -42,13 +43,13 @@ object M2_típusos_programozás extends App {
         Nyilvántartás(Készlet(készlet.set + k), kiadva, javításon).csináld(ak)
 
       case Kihelyezés(k, b, d) :: ak =>
-        Nyilvántartás(Készlet(készlet.set - k), Kiadva(kiadva.set + k), javításon)
+        Nyilvántartás(Készlet(készlet.set - k), Kiadva(kiadva.set + k), javításon).csináld(ak)
 
       case Visszaadás(k, b, d) :: ak =>
-        Nyilvántartás(Készlet(készlet.set + k), Kiadva(kiadva.set - k), javításon)
+        Nyilvántartás(Készlet(készlet.set + k), Kiadva(kiadva.set - k), javításon).csináld(ak)
 
       case Javítás(k) :: ak =>
-        Nyilvántartás(Készlet(készlet.set - k), kiadva, Javításon(javításon.set + k))
+        Nyilvántartás(Készlet(készlet.set - k), kiadva, Javításon(javításon.set + k)).csináld(ak)
     }
   }
 
@@ -73,16 +74,20 @@ object M2_típusos_programozás extends App {
 
   assert(
     nyilvántartás
-      .csináld(Kihelyezés(MagzatSzívhangMérő(1), Beteg("Nagy Erika"), Orvos("Sári Tamás")))
-      .csináld(Kihelyezés(MagzatSzívhangMérő(2), Beteg("Kiss Anna"), Orvos("Sári Tamás")))
+      .csináld(
+        Kihelyezés(MagzatSzívhangMérő(1), Beteg("Nagy Erika"), Orvos("Sári Tamás")),
+        Kihelyezés(MagzatSzívhangMérő(2), Beteg("Kiss Anna"), Orvos("Sári Tamás"))
+      )
 
       == Nyilvántartás(kiadva = Kiadva(Set(MagzatSzívhangMérő(1), MagzatSzívhangMérő(2))))
   )
 
   assert(
     nyilvántartás
-      .csináld(Kihelyezés(MagzatSzívhangMérő(1), Beteg("Nagy Erika"), Orvos("Sári Tamás")))
-      .csináld(Visszaadás(MagzatSzívhangMérő(1), Beteg("Nagy Erika"), Orvos("Sári Tamás")))
+      .csináld(
+        Kihelyezés(MagzatSzívhangMérő(1), Beteg("Nagy Erika"), Orvos("Sári Tamás")),
+        Visszaadás(MagzatSzívhangMérő(1), Beteg("Nagy Erika"), Orvos("Sári Tamás"))
+      )
 
       == nyilvántartás
   )
