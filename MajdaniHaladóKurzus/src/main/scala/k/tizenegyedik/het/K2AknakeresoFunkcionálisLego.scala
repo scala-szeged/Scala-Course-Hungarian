@@ -31,7 +31,7 @@ mkString a kiíratáskor
 reverse
 zipWithIndex
  */
-object K2Aknakereso {
+object K2AknakeresoFunkcionálisLego {
 
   def main(args: Array[String]): Unit = {
 
@@ -71,71 +71,97 @@ object K2Aknakereso {
     lépj(List(kiindulóTábla)).reverse
   }
 
-  def lépj(táblák: Táblák): Táblák = {
+  //noinspection ConvertibleToMethodValue
+  def lépj(régi: Táblák): Táblák = {
+    val lépés = jelöldAzAknákat _ andThen takardKiANemAknákat _
+    val új = lépés(régi)
+    if (új != régi)
+      lépj(új)
+    else
+      régi
+  }
+
+  def jelöldAzAknákat(táblák: Táblák): Táblák = {
     val aknák = keresdAzAknákat(táblák.head)
-    val tk2 = aknák.foldRight(táblák) {
-      case ((aknaX, aknaY), tábla :: előzőTáblák) =>
+    aknák.foldLeft(táblák) {
+      case (tábla :: előzőTáblák, (aknaX, aknaY)) =>
         ténylegAknaE(aknaX, aknaY, tábla)
         takardKi(aknaX, aknaY, tábla) :: tábla :: előzőTáblák
     }
-    aknák.foldLeft(tk2) {
-      case (tk3, (aknaX, aknaY)) =>
-        val tk4 = takardKiANemAknákat(aknaX, aknaY, tk3)
-        if (vanMégTakartCella(tk4.head)) {
-          lépj(tk4)
-        } else {
-          tk4
+  }
+
+  def takardKiANemAknákat(táblák: Táblák): Táblák = {
+    implicit val tábla = táblák.head
+    (cellák filter összesAknájaLátszódik).foldLeft(táblák)(takardKiASzomszédokat)
+  }
+
+  def keresdAzAknákat(implicit tábla: Tábla): KoordinátaLista =
+    cellák flatMap { implicit koordináták =>
+
+      if ((nemNullaSzám getOrElse -9) == (szomszédok count takart) + (szomszédok count látszódóAkna))
+        szomszédok filter takart
+      else
+        List()
+    }
+
+  def nemNullaSzám(implicit koordináták: (Int, Int), tábla: Tábla): Option[Int] =
+    koordináták match {
+      case ((x, y)) => tábla(y)(x) match {
+        case Szám(n) if n > 0 => Some(n)
+        case _ => None
+      }
+    }
+
+  def takart(implicit tábla: Tábla): ((Int, Int)) => Boolean = {
+    case ((x, y)) =>
+      tábla(y)(x) match {
+        case _: TakartCella =>
+          true
+
+        case _ =>
+          false
+      }
+  }
+
+  def cellák(implicit tábla: Tábla): List[(Int, Int)] = for {
+    x <- tábla.head.indices.toList
+    y <- tábla.indices
+  } yield (x, y)
+
+  //noinspection MatchToPartialFunction
+  def összesAknájaLátszódik(implicit tábla: Tábla): ((Int, Int)) => Boolean = {
+    implicit koordináták: (Int, Int) =>
+      koordináták match {
+        case ((x, y)) => tábla(y)(x) match {
+          case Szám(0) =>
+            false
+
+          case Szám(n) =>
+            n == (szomszédok count látszódóAkna)
+
+          case _ =>
+            false
         }
-    }
+      }
   }
 
-  def keresdAzAknákat(tábla: Tábla): KoordinátaLista = {
-    cellák(Nil: KoordinátaLista, tábla) {
-      case (lista, Szám(n), cx, cy) if n > 0 =>
-        val tszk = takartSzomszédok(cx, cy, tábla)
-        if (n == tszk.size)
-          tszk ::: lista
-        else
-          lista
-
-      case (lista, _, _, _) =>
-        lista
+  def szomszédok(implicit koordináták: (Int, Int), tábla: Tábla): Set[(Int, Int)] = {
+    val szk: Set[(Int, Int)] = koordináták match {
+      case (x, y) => for (q <- Set(
+        (x + 1, y - 1), (x + 1, y), (x + 1, y + 1),
+        (x, y - 1), /*           */ (x, y + 1),
+        (x - 1, y - 1), (x - 1, y), (x - 1, y + 1))) yield q
     }
+
+    szk filter rajtaVanATáblán
   }
 
-  def takardKiANemAknákat(aknaX: Int, aknaY: Int, táblák: Táblák): Táblák = {
-    szomszédok(táblák, aknaX, aknaY) {
-      case (tk, Szám(n), x, y) =>
-        if (n == látszódóSzomszédAknákSzáma(x, y, tk.head))
-          takardKiASzomszédokat(x, y, tk)
-        else
-          tk
-
-      case (tk, _, _, _) =>
-        tk
-    }
+  def rajtaVanATáblán(implicit tábla: Tábla): ((Int, Int)) => Boolean = {
+    case (x, y) => (tábla.head.indices contains x) && (tábla.indices contains y)
   }
 
-  def takartSzomszédok(cx: Int, cy: Int, tábla: Tábla): KoordinátaLista = {
-    szomszédok(Nil: KoordinátaLista, cx, cy, tábla) {
-      case (lista, _: TakartCella, x, y) => (x, y) :: lista
-      case (lista, _, _, _) => lista
-    }
-  }
-
-  def látszódóSzomszédAknákSzáma(cx: Int, cy: Int, tábla: Tábla): Int = {
-    szomszédok(0, cx, cy, tábla) {
-      case (n, Akna, _, _) => n + 1
-      case (n, _, _, _) => n
-    }
-  }
-
-  def vanMégTakartCella(tábla: Tábla): Boolean = {
-    val tck = cellák(0, tábla) {
-      case (n, _: TakartCella, _, _) => n + 1
-      case (n, _, _, _) => n
-    }
-    tck > 0
+  def látszódóAkna(implicit tábla: Tábla): ((Int, Int)) => Boolean = {
+    case (x, y) => tábla(y)(x) == Akna
   }
 
   def ténylegAknaE(aknaX: Int, aknaY: Int, tábla: Tábla): Unit = {
@@ -146,51 +172,6 @@ object K2Aknakereso {
     }
   }
 
-  def szomszédok[A](a: A, cx: Int, cy: Int, tábla: Tábla)(f: (A, Cella, Int, Int) => A): A = {
-    val startX = max(0, cx - 1)
-    val endX = min(tábla.head.size - 1, cx + 1)
-
-    val endY = min(tábla.size - 1, cy + 1)
-    val startY = max(0, cy - 1)
-
-    (startX to endX).foldLeft(a) { (átmenetiA, x) =>
-      (startY to endY).foldLeft(átmenetiA) { (igaziA, y) =>
-        if (x != cx || y != cy)
-          f(igaziA, tábla(y)(x), x, y)
-        else
-          igaziA
-      }
-    }
-  }
-
-  def szomszédok(táblák: Táblák, cx: Int, cy: Int)(f: (Táblák, Cella, Int, Int) => Táblák): Táblák = {
-    val táblaAzElején = táblák.head
-    val startX = max(0, cx - 1)
-    val endX = min(táblaAzElején.head.size - 1, cx + 1)
-
-    val endY = min(táblaAzElején.size - 1, cy + 1)
-    val startY = max(0, cy - 1)
-
-    (startX to endX).foldLeft(táblák) { (átmenetiA, x) =>
-      (startY to endY).foldLeft(átmenetiA) { (igaziA, y) =>
-        if (x != cx || y != cy) {
-          val tábla = igaziA.head
-          f(igaziA, tábla(y)(x), x, y)
-        } else {
-          igaziA
-        }
-      }
-    }
-  }
-
-  def cellák[A](a: A, tábla: Tábla)(f: (A, Cella, Int, Int) => A): A = {
-    tábla.zipWithIndex.foldLeft(a) { case (átmenetiA, (sor, sorIndex)) =>
-      sor.zipWithIndex.foldLeft(átmenetiA) { case (igaziA, (cella, cellaIndex)) =>
-        f(igaziA, cella, cellaIndex, sorIndex)
-      }
-    }
-  }
-
   def takardBeMind(tábla: Tábla): Tábla =
     for (sor <- tábla) yield
       for (cella <- sor) yield cella match {
@@ -198,7 +179,7 @@ object K2Aknakereso {
         case Szám(n) => TakartSzám(n)
       }
 
-  def takardKiASzomszédokat(kiX: Int, kiY: Int, táblák: Táblák): Táblák = {
+  def takardKiASzomszédokat(táblák: Táblák, koordináták: (Int, Int)): Táblák = {
 
     def takardKiASzomszédokat(kiX: Int, kiY: Int): KoordinátaLista = {
       val tábla = táblák.head
@@ -232,6 +213,7 @@ object K2Aknakereso {
 
 
     val maszk: KoordinátaSet = táblábólMaszk(táblák.head)
+    val (kiX, kiY) = koordináták
     val lista = takardKiASzomszédokat(kiX, kiY)
 
     val (újTáblák, _) = lista.foldLeft((táblák, maszk)) { case ((tk, mszk), koordináta) =>
