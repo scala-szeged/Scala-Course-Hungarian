@@ -91,7 +91,7 @@ object K2AknakeresoFunkcionálisLego {
   }
 
   def takardKiANemAknákat(táblák: Táblák): Táblák = {
-    implicit val tábla = táblák.head
+    implicit val tábla: Tábla = táblák.head
     (cellák filter összesAknájaLátszódik).foldLeft(táblák)(takardKiASzomszédokat)
   }
 
