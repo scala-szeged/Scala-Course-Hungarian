@@ -73,32 +73,32 @@ object K2AknakeresoFunkcionálisLego {
 
   //noinspection ConvertibleToMethodValue
   def lépj(régi: Táblák): Táblák = {
-    val lépés = jelöldAzAknákat _ andThen takardKiANemAknákat _
-    val új = lépés(régi)
-    if (új != régi)
-      lépj(új)
+    val lépés = jelöldAzAknákat andThen takardKiANemAknákat
+    implicit val újTábla :: régiTáblák = lépés(régi)
+    if (0 < (cellák count takart))
+      lépj(újTábla :: régiTáblák)
     else
       régi
   }
 
-  def jelöldAzAknákat(táblák: Táblák): Táblák = {
-    val aknák = keresdAzAknákat(táblák.head)
-    aknák.foldLeft(táblák) {
+  val jelöldAzAknákat: Táblák => Táblák = { táblák =>
+    implicit val t: Tábla = táblák.head
+    keresdAzAknákat.foldLeft(táblák) {
       case (tábla :: előzőTáblák, (aknaX, aknaY)) =>
         ténylegAknaE(aknaX, aknaY, tábla)
         takardKi(aknaX, aknaY, tábla) :: tábla :: előzőTáblák
     }
   }
 
-  def takardKiANemAknákat(táblák: Táblák): Táblák = {
+  val takardKiANemAknákat: Táblák => Táblák = { táblák =>
     implicit val tábla: Tábla = táblák.head
-    (cellák filter összesAknájaLátszódik).foldLeft(táblák)(takardKiASzomszédokat)
+    (cellák filter összesAknájaLátszódik filter vanTakartSzomszédja).foldLeft(táblák)(takardKiASzomszédokat)
   }
 
   def keresdAzAknákat(implicit tábla: Tábla): KoordinátaLista =
     cellák flatMap { implicit koordináták =>
 
-      if ((nemNullaSzám getOrElse -9) == (szomszédok count takart) + (szomszédok count látszódóAkna))
+      if ((nemNullaSzám getOrElse -1) == (szomszédok count takart) + (szomszédok count látszódóAkna))
         szomszédok filter takart
       else
         List()
@@ -143,6 +143,10 @@ object K2AknakeresoFunkcionálisLego {
             false
         }
       }
+  }
+
+  def vanTakartSzomszédja(implicit tábla: Tábla): ((Int, Int)) => Boolean = {
+    implicit koordináták => (szomszédok count takart) > 0
   }
 
   def szomszédok(implicit koordináták: (Int, Int), tábla: Tábla): Set[(Int, Int)] = {
