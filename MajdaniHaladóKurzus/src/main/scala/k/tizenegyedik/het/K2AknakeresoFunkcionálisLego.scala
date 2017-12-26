@@ -1,8 +1,10 @@
 package k.tizenegyedik.het
 
-import java.lang.Math.{abs, max, min}
+import java.lang.Math.abs
 
 import model.AknakeresoModel._
+
+import scala.collection.immutable.ListSet
 
 /*
 Példát csináltam rá:
@@ -151,7 +153,7 @@ object K2AknakeresoFunkcionálisLego {
 
   def szomszédok(implicit koordináták: (Int, Int), tábla: Tábla): Set[(Int, Int)] = {
     val szk: Set[(Int, Int)] = koordináták match {
-      case (x, y) => for (q <- Set(
+      case (x, y) => for (q <- ListSet(
         (x - 1, y - 1), (x, y - 1), (x + 1, y - 1),
         (x - 1, y), /*           */ (x + 1, y),
         (x - 1, y + 1), (x, y + 1), (x + 1, y + 1))) yield q
@@ -193,7 +195,8 @@ object K2AknakeresoFunkcionálisLego {
 
   def takardKi(kiX: Int, kiY: Int, tábla: Tábla): Tábla = {
 
-    def loop(x: Int, y: Int, tábla: Tábla): Tábla = {
+    def loop(tábla: Tábla, c: (Int, Int)): Tábla = {
+      val (x, y) = c
       tábla(y)(x) match {
         case TakartSzám(n) =>
           újTábla(tábla, x, y, Szám(n))
@@ -206,12 +209,9 @@ object K2AknakeresoFunkcionálisLego {
 
     tábla(kiY)(kiX) match {
       case TakartSzám(0) =>
-        nullaSzomszédokSzomszédjai((kiX, kiY), tábla).foldLeft(tábla) {
-          case (tt, (x, y)) =>
-            loop(x, y, tt)
-        }
+        nullaSzomszédokSzomszédjai((kiX, kiY), tábla).foldLeft(tábla)(loop)
       case _ =>
-        loop(kiX, kiY, tábla)
+        loop(tábla, (kiX, kiY))
     }
   }
 
