@@ -152,9 +152,9 @@ object K2AknakeresoFunkcionálisLego {
   def szomszédok(implicit koordináták: (Int, Int), tábla: Tábla): Set[(Int, Int)] = {
     val szk: Set[(Int, Int)] = koordináták match {
       case (x, y) => for (q <- Set(
-        (x + 1, y - 1), (x + 1, y), (x + 1, y + 1),
-        (x, y - 1), /*           */ (x, y + 1),
-        (x - 1, y - 1), (x - 1, y), (x - 1, y + 1))) yield q
+        (x - 1, y - 1), (x, y - 1), (x + 1, y - 1),
+        (x - 1, y), /*           */ (x + 1, y),
+        (x - 1, y + 1), (x, y + 1), (x + 1, y + 1))) yield q
     }
 
     szk filter rajtaVanATáblán
@@ -184,123 +184,56 @@ object K2AknakeresoFunkcionálisLego {
       }
 
   def takardKiASzomszédokat(táblák: Táblák, koordináták: (Int, Int)): Táblák = {
-
-    def takardKiASzomszédokat(kiX: Int, kiY: Int): KoordinátaLista = {
-      val tábla = táblák.head
-      val startX = max(0, kiX - 1)
-      val endX = min(tábla.head.size - 1, kiX + 1)
-
-      val endY = min(tábla.size - 1, kiY + 1)
-      val startY = max(0, kiY - 1)
-
-      (startX to endX).foldLeft(Nil: KoordinátaLista) { (listaX, x) =>
-        (startY to endY).foldLeft(listaX) { (listaY, y) =>
-          if (x != kiX || y != kiY)
-            takardKiACellát(x, y, listaY)
-          else
-            listaY
-        }
-      }
+    implicit val t = táblák.head
+    implicit val kk = koordináták
+    (szomszédok filter takart).foldLeft(táblák) {
+      case (tk, (x, y)) => takardKi(x, y, tk.head) :: tk
     }
-
-    def takardKiACellát(kiX: Int, kiY: Int, lista: KoordinátaLista): KoordinátaLista = {
-      táblák.head(kiY)(kiX) match {
-        case _: TakartCella => Tuple2(kiX, kiY) :: lista
-        case _ => lista
-      }
-    }
-
-    def nullátTakartKi(x: Int, y: Int, tábla: Tábla): Boolean = tábla(y)(x) match {
-      case TakartSzám(0) => true
-      case _ => false
-    }
-
-
-    val maszk: KoordinátaSet = táblábólMaszk(táblák.head)
-    val (kiX, kiY) = koordináták
-    val lista = takardKiASzomszédokat(kiX, kiY)
-
-    val (újTáblák, _) = lista.foldLeft((táblák, maszk)) { case ((tk, mszk), koordináta) =>
-      val újMaszk = mszk - koordináta
-      if (nullátTakartKi(koordináta._1, koordináta._2, tk.head)) {
-        val újTábla = takardKi(koordináta._1, koordináta._2, tk.head)
-        (újTábla :: tk, újMaszk)
-      } else {
-        val újTábla = maszkold(tk.head, újMaszk)
-        (újTábla :: tk, újMaszk)
-      }
-    }
-    újTáblák
   }
 
   def takardKi(kiX: Int, kiY: Int, tábla: Tábla): Tábla = {
 
-    def takardKiACellát(kiX: Int, kiY: Int, maszk: KoordinátaSet): KoordinátaSet = {
-      val maszkoltTábla = maszkold(tábla, maszk)
-      maszkoltTábla(kiY)(kiX) match {
-        case TakartSzám(0) => takardKiASzomszédokat(
-          kiX, kiY, maszk - Tuple2(kiX, kiY)
-        )
-        case TakartSzám(_) => maszk - Tuple2(kiX, kiY)
-        case TakartAkna => maszk - Tuple2(kiX, kiY)
-        case _ => maszk
+    def loop(x: Int, y: Int, tábla: Tábla): Tábla = {
+      tábla(y)(x) match {
+        case TakartSzám(n) =>
+          újTábla(tábla, x, y, Szám(n))
+        case TakartAkna =>
+          újTábla(tábla, x, y, Akna)
+        case _ =>
+          tábla
       }
     }
 
-    def takardKiASzomszédokat(kiX: Int, kiY: Int, maszk: KoordinátaSet): KoordinátaSet = {
-      val startX = max(0, kiX - 1)
-      val endX = min(tábla.head.size - 1, kiX + 1)
-
-      val endY = min(tábla.size - 1, kiY + 1)
-      val startY = max(0, kiY - 1)
-
-      (startX to endX).foldLeft(maszk) { (mx, x) =>
-        (startY to endY).foldLeft(mx) { (my, y) =>
-          takardKiACellát(x, y, my)
+    tábla(kiY)(kiX) match {
+      case TakartSzám(0) =>
+        nullaSzomszédokSzomszédjai((kiX, kiY), tábla).foldLeft(tábla) {
+          case (tt, (x, y)) =>
+            loop(x, y, tt)
         }
+      case _ =>
+        loop(kiX, kiY, tábla)
+    }
+  }
+
+  def nullaSzomszédokSzomszédjai(nulla: (Int, Int), tábla: Tábla): Set[(Int, Int)] = {
+
+    def loop(szomszédokEddig: Set[(Int, Int)], c: (Int, Int)): Set[(Int, Int)] = {
+      if (szomszédok(c, tábla).forall(szomszédokEddig.contains))
+        szomszédokEddig
+      else tábla(c._2)(c._1) match {
+        case TakartSzám(0) =>
+          implicit val cella = c
+          implicit val t = tábla
+          (szomszédok + c -- szomszédokEddig).foldLeft(szomszédok + c ++ szomszédokEddig)(loop)
+        case _ =>
+          szomszédokEddig + c
       }
     }
 
-    val maszk: KoordinátaSet = táblábólMaszk(tábla)
-
-    maszkold(tábla, takardKiACellát(kiX, kiY, maszk))
+    loop(Set(), nulla)
   }
 
-  def táblábólMaszk(tábla: Tábla): KoordinátaSet = {
-    val maszkLista =
-      for {
-        (sor, sorIndex) <- tábla.zipWithIndex
-        (cella, cellaIndex) <- sor.zipWithIndex
-        if cella == TakartAkna || cella.isInstanceOf[TakartSzám]
-      }
-        yield (cellaIndex, sorIndex)
-
-    maszkLista.toSet
-  }
-
-  def maszkold(tábla: Tábla, maszk: KoordinátaSet): Tábla = {
-    for {(sor, sorIndex) <- tábla.zipWithIndex} yield
-      for {(cella, cellaIndex) <- sor.zipWithIndex} yield
-        cella match {
-          case Akna | TakartAkna =>
-            if (maszk(cellaIndex, sorIndex))
-              TakartAkna
-            else
-              Akna
-
-          case Szám(n) =>
-            if (maszk(cellaIndex, sorIndex))
-              TakartSzám(n)
-            else
-              Szám(n)
-
-          case TakartSzám(n) =>
-            if (maszk(cellaIndex, sorIndex))
-              TakartSzám(n)
-            else
-              Szám(n)
-        }
-  }
+  def újTábla(tábla: Tábla, x: Int, y: Int, cella: Cella): Tábla = tábla.updated(y, tábla(y).updated(x, cella))
 
   def rakd(rakdX: Int, rakdY: Int, tábla: Tábla): Tábla =
     List.tabulate(tábla.size, tábla.head.size) {
