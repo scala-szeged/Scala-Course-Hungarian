@@ -80,14 +80,14 @@ object K2AknakeresoFunkcionálisLego {
     if (0 < (cellák count takart))
       lépj(újTábla :: régiTáblák)
     else
-      régi
+      újTábla :: régiTáblák
   }
 
   val jelöldAzAknákat: Táblák => Táblák = { táblák =>
     implicit val t: Tábla = táblák.head
     keresdAzAknákat.foldLeft(táblák) {
       case (tábla :: előzőTáblák, (aknaX, aknaY)) =>
-        ténylegAknaE(aknaX, aknaY, tábla)
+        ténylegTakartAknaE(aknaX, aknaY, tábla)
         takardKi(aknaX, aknaY, tábla) :: tábla :: előzőTáblák
     }
   }
@@ -98,13 +98,13 @@ object K2AknakeresoFunkcionálisLego {
   }
 
   def keresdAzAknákat(implicit tábla: Tábla): KoordinátaLista =
-    cellák flatMap { implicit koordináták =>
+    (cellák flatMap { implicit koordináták =>
 
       if ((nemNullaSzám getOrElse -1) == (szomszédok count takart) + (szomszédok count látszódóAkna))
         szomszédok filter takart
       else
         List()
-    }
+    }).distinct
 
   def nemNullaSzám(implicit koordináták: (Int, Int), tábla: Tábla): Option[Int] =
     koordináták match {
@@ -170,11 +170,11 @@ object K2AknakeresoFunkcionálisLego {
     case (x, y) => tábla(y)(x) == Akna
   }
 
-  def ténylegAknaE(aknaX: Int, aknaY: Int, tábla: Tábla): Unit = {
+  def ténylegTakartAknaE(aknaX: Int, aknaY: Int, tábla: Tábla): Unit = {
     tábla(aknaY)(aknaX) match {
-      case TakartAkna | Akna => // OK
-      case _ => println(aknaX, aknaY, " nem akna, pedig úgy számoltuk, hogy az")
-        println("ebben a sorban volt a nem akna ", tábla(aknaY))
+      case TakartAkna => // OK
+      case _ => println(aknaX, aknaY, " nem takart akna, pedig úgy számoltuk, hogy az")
+        println("ebben a sorban volt a nem takart akna ", tábla(aknaY))
     }
   }
 
