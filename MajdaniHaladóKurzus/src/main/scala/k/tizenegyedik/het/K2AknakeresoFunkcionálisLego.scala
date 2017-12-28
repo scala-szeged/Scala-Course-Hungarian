@@ -52,6 +52,7 @@ object K2AknakeresoFunkcionálisLego {
     println
 
     val jólElkezdettA = takardKi(0, 2, takardBeMind(a))
+    val jólElkezdettB = takardKi(0, 0, takardKi(1, 0, takardKi(1, 1, takardBeMind(b))))
     val jólElkezdettC = takardKi(0, 0, takardKi(2, 0, takardBeMind(c)))
     view.AknakeresőKonzolon.írdKiEgymásMellé(
       takardKi(3, 0, takardBeMind(a)),
@@ -69,6 +70,11 @@ object K2AknakeresoFunkcionálisLego {
 
     view.AknakeresőKonzolon.írdKiEgymásMellé(
       a :: oldMegLépésenként(jólElkezdettA)
+    )
+    println
+
+    view.AknakeresőKonzolon.írdKiEgymásMellé(
+      b :: oldMegLépésenként(jólElkezdettB)
     )
     println
 
