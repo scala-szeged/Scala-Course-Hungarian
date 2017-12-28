@@ -42,9 +42,12 @@ object K2AknakeresoFunkcionálisLego {
     val a = rakd(0, 0, rakd(1, 0, rakd(4, 2, üres)))
     val b = rakd(0, 1, üres)
     val c = rakd(2, 1, üres)
+    val cVégjáték = c.updated(0, c(0).updated(4, TakartSzám(0))).
+      updated(1, c(1).updated(4, TakartSzám(0))).
+      updated(2, c(2).updated(4, TakartSzám(0)))
 
     view.AknakeresőKonzolon.írdKiEgymásMellé(
-      a, b, c, c, a
+      a, b, c, c, a, cVégjáték
     )
     println
 
@@ -57,13 +60,18 @@ object K2AknakeresoFunkcionálisLego {
       jólElkezdettC,
       jólElkezdettA
     )
-
     println
+
+    view.AknakeresőKonzolon.írdKiEgymásMellé(
+      c :: oldMegLépésenként(cVégjáték)
+    )
+    println
+
     view.AknakeresőKonzolon.írdKiEgymásMellé(
       a :: oldMegLépésenként(jólElkezdettA)
     )
-
     println
+
     view.AknakeresőKonzolon.írdKiEgymásMellé(
       c :: oldMegLépésenként(jólElkezdettC)
     )
@@ -106,13 +114,20 @@ object K2AknakeresoFunkcionálisLego {
         List()
     }).distinct
 
-  def nemNullaSzám(implicit koordináták: (Int, Int), tábla: Tábla): Option[Int] =
+  def nemNullaSzám(implicit koordináták: ((Int, Int)), tábla: Tábla): Option[Int] =
     koordináták match {
       case ((x, y)) => tábla(y)(x) match {
         case Szám(n) if n > 0 => Some(n)
         case _ => None
       }
     }
+
+  def takartNullaSzám(implicit tábla: Tábla): ((Int, Int)) => Boolean = {
+    case ((x, y)) => tábla(y)(x) match {
+      case TakartSzám(0) => true
+      case _ => false
+    }
+  }
 
   def takart(implicit tábla: Tábla): ((Int, Int)) => Boolean = {
     case ((x, y)) =>
@@ -188,9 +203,16 @@ object K2AknakeresoFunkcionálisLego {
   def takardKiASzomszédokat(táblák: Táblák, koordináták: (Int, Int)): Táblák = {
     implicit val t = táblák.head
     implicit val kk = koordináták
-    (szomszédok filter takart).foldLeft(táblák) {
-      case (tk, (x, y)) => takardKi(x, y, tk.head) :: tk
-    }
+    val takartSzomszédok = szomszédok filter takart
+    val takartNullaSzomszéd = takartSzomszédok.find(takartNullaSzám)
+    if (takartNullaSzomszéd.nonEmpty)
+      takartNullaSzomszéd.foldLeft(táblák) {
+        case (tk, (x, y)) => takardKi(x, y, tk.head) :: tk
+      }
+    else
+      takartSzomszédok.foldLeft(táblák) {
+        case (tk, (x, y)) => takardKi(x, y, tk.head) :: tk
+      }
   }
 
   def takardKi(kiX: Int, kiY: Int, tábla: Tábla): Tábla = {
