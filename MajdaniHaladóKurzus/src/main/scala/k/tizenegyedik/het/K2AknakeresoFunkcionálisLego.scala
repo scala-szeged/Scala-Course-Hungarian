@@ -1,7 +1,5 @@
 package k.tizenegyedik.het
 
-import java.lang.Math.abs
-
 import model.AknakeresoModel._
 
 import scala.collection.immutable.ListSet
@@ -42,7 +40,8 @@ object K2AknakeresoFunkcionálisLego {
     val a = rakd(0, 0, rakd(1, 0, rakd(4, 2, üres)))
     val b = rakd(0, 1, üres)
     val c = rakd(2, 1, üres)
-    val cVégjáték = c.updated(0, c(0).updated(4, TakartSzám(0))).
+    val cVégjáték = c.
+      updated(0, c(0).updated(4, TakartSzám(0))).
       updated(1, c(1).updated(4, TakartSzám(0))).
       updated(2, c(2).updated(4, TakartSzám(0)))
 
@@ -210,7 +209,7 @@ object K2AknakeresoFunkcionálisLego {
     implicit val t = táblák.head
     implicit val kk = koordináták
     val takartSzomszédok = szomszédok filter takart
-    val takartNullaSzomszéd = takartSzomszédok.find(takartNullaSzám)
+    val takartNullaSzomszéd = takartSzomszédok find takartNullaSzám
     if (takartNullaSzomszéd.nonEmpty)
       takartNullaSzomszéd.foldLeft(táblák) {
         case (tk, (x, y)) => takardKi(x, y, tk.head) :: tk
@@ -267,7 +266,7 @@ object K2AknakeresoFunkcionálisLego {
     List.tabulate(tábla.size, tábla.head.size) {
       case (`rakdY`, `rakdX`) =>
         Akna
-      case (y, x) if abs(x - rakdX) <= 1 && abs(y - rakdY) <= 1 =>
+      case (y, x) if szomszédok((rakdX, rakdY), tábla).contains(x, y) =>
         tábla(y)(x) match {
           case Szám(n) => Szám(n + 1)
           case _ => tábla(y)(x)
