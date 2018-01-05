@@ -119,6 +119,34 @@ object K2AknakeresoFunkcionálisLego {
         List()
     }).distinct
 
+  def jelezzHibátHaNemTakartAkna(aknaX: Int, aknaY: Int, tábla: Tábla): Unit = {
+    tábla(aknaY)(aknaX) match {
+      case TakartAkna => // OK
+      case _ => println(aknaX, aknaY, " nem takart akna, pedig úgy számoltuk, hogy az")
+        println("ebben a sorban volt a nem takart akna ", tábla(aknaY))
+    }
+  }
+
+  def cellák(implicit tábla: Tábla): List[(Int, Int)] = for {
+    x <- tábla.head.indices.toList
+    y <- tábla.indices
+  } yield (x, y)
+
+  def szomszédok(implicit koordináták: (Int, Int), tábla: Tábla): Set[(Int, Int)] = {
+    val szk: Set[(Int, Int)] = koordináták match {
+      case (x, y) => for (q <- ListSet(
+        (x - 1, y - 1), (x, y - 1), (x + 1, y - 1),
+        (x - 1, y), /*           */ (x + 1, y),
+        (x - 1, y + 1), (x, y + 1), (x + 1, y + 1))) yield q
+    }
+
+    szk filter rajtaVanATáblán
+  }
+
+  def rajtaVanATáblán(implicit tábla: Tábla): ((Int, Int)) => Boolean = {
+    case (x, y) => (tábla.head.indices contains x) && (tábla.indices contains y)
+  }
+
   def nemNullaSzám(implicit koordináták: ((Int, Int)), tábla: Tábla): Option[Int] =
     koordináták match {
       case ((x, y)) => tábla(y)(x) match {
@@ -127,28 +155,13 @@ object K2AknakeresoFunkcionálisLego {
       }
     }
 
-  def takartNullaSzám(implicit tábla: Tábla): ((Int, Int)) => Boolean = {
-    case ((x, y)) => tábla(y)(x) match {
-      case TakartSzám(0) => true
-      case _ => false
-    }
-  }
-
   def takart(implicit tábla: Tábla): ((Int, Int)) => Boolean = {
-    case ((x, y)) =>
-      tábla(y)(x) match {
-        case _: TakartCella =>
-          true
-
-        case _ =>
-          false
-      }
+    case ((x, y)) => tábla(y)(x).isInstanceOf[TakartCella]
   }
 
-  def cellák(implicit tábla: Tábla): List[(Int, Int)] = for {
-    x <- tábla.head.indices.toList
-    y <- tábla.indices
-  } yield (x, y)
+  def látszódóAkna(implicit tábla: Tábla): ((Int, Int)) => Boolean = {
+    case (x, y) => tábla(y)(x) == Akna
+  }
 
   //noinspection MatchToPartialFunction
   def összesAknájaLátszódik(implicit tábla: Tábla): ((Int, Int)) => Boolean = {
@@ -170,40 +183,6 @@ object K2AknakeresoFunkcionálisLego {
   def vanTakartSzomszédja(implicit tábla: Tábla): ((Int, Int)) => Boolean = {
     implicit koordináták => szomszédok exists takart
   }
-
-  def szomszédok(implicit koordináták: (Int, Int), tábla: Tábla): Set[(Int, Int)] = {
-    val szk: Set[(Int, Int)] = koordináták match {
-      case (x, y) => for (q <- ListSet(
-        (x - 1, y - 1), (x, y - 1), (x + 1, y - 1),
-        (x - 1, y), /*           */ (x + 1, y),
-        (x - 1, y + 1), (x, y + 1), (x + 1, y + 1))) yield q
-    }
-
-    szk filter rajtaVanATáblán
-  }
-
-  def rajtaVanATáblán(implicit tábla: Tábla): ((Int, Int)) => Boolean = {
-    case (x, y) => (tábla.head.indices contains x) && (tábla.indices contains y)
-  }
-
-  def látszódóAkna(implicit tábla: Tábla): ((Int, Int)) => Boolean = {
-    case (x, y) => tábla(y)(x) == Akna
-  }
-
-  def jelezzHibátHaNemTakartAkna(aknaX: Int, aknaY: Int, tábla: Tábla): Unit = {
-    tábla(aknaY)(aknaX) match {
-      case TakartAkna => // OK
-      case _ => println(aknaX, aknaY, " nem takart akna, pedig úgy számoltuk, hogy az")
-        println("ebben a sorban volt a nem takart akna ", tábla(aknaY))
-    }
-  }
-
-  def takardBeMind(tábla: Tábla): Tábla =
-    for (sor <- tábla) yield
-      for (cella <- sor) yield cella match {
-        case Akna => TakartAkna
-        case Szám(n) => TakartSzám(n)
-      }
 
   //noinspection TypeAnnotation
   def takardKiASzomszédokat(táblák: Táblák, koordináták: (Int, Int)): Táblák = {
@@ -264,6 +243,13 @@ object K2AknakeresoFunkcionálisLego {
 
   def újTábla(tábla: Tábla, x: Int, y: Int, cella: Cella): Tábla = tábla.updated(y, tábla(y).updated(x, cella))
 
+  def takartNullaSzám(implicit tábla: Tábla): ((Int, Int)) => Boolean = {
+    case ((x, y)) => tábla(y)(x) match {
+      case TakartSzám(0) => true
+      case _ => false
+    }
+  }
+
   def rakd(rakdX: Int, rakdY: Int, tábla: Tábla): Tábla =
     List.tabulate(tábla.size, tábla.head.size) {
       case (`rakdY`, `rakdX`) =>
@@ -275,4 +261,11 @@ object K2AknakeresoFunkcionálisLego {
         }
       case (y, x) => tábla(y)(x)
     }
+
+  def takardBeMind(tábla: Tábla): Tábla =
+    for (sor <- tábla) yield
+      for (cella <- sor) yield cella match {
+        case Akna => TakartAkna
+        case Szám(n) => TakartSzám(n)
+      }
 }
