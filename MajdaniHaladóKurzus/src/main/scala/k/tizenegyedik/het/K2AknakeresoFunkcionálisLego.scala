@@ -107,7 +107,8 @@ object K2AknakeresoFunkcionálisLego {
 
   val takardKiANemAknákat: Táblák => Táblák = { táblák =>
     implicit val tábla: Tábla = táblák.head
-    (cellák filter összesAknájaLátszódik filter vanTakartSzomszédja).foldLeft(táblák)(takardKiASzomszédokat)
+    val takartSzomszédjaiNemAknák = cellák filter összesAknájaLátszódik filter vanTakartSzomszédja
+    takartSzomszédjaiNemAknák.foldLeft(táblák)(takardKiASzomszédokat)
   }
 
   def keresdAzAknákat(implicit tábla: Tábla): KoordinátaLista =
@@ -189,7 +190,7 @@ object K2AknakeresoFunkcionálisLego {
     implicit val t = táblák.head
     implicit val kk = koordináták
     val takartSzomszédok = szomszédok filter takart
-    val takartNullaSzomszéd = takartSzomszédok find takartNullaSzám
+    val takartNullaSzomszéd: Option[(Int, Int)] = takartSzomszédok find takartNullaSzám
     if (takartNullaSzomszéd.nonEmpty)
       takartNullaSzomszéd.foldLeft(táblák) {
         case (tk, (x, y)) => takardKi(x, y, tk.head) :: tk
