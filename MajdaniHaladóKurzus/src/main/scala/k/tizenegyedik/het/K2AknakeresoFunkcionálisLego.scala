@@ -33,6 +33,7 @@ zipWithIndex
  */
 object K2AknakeresoFunkcionálisLego {
 
+  //noinspection ZeroIndexToHead
   def main(args: Array[String]): Unit = {
 
     val üres = List.tabulate(3, 5) { (_, _) => Szám(0) }
@@ -90,17 +91,16 @@ object K2AknakeresoFunkcionálisLego {
   def lépj(régi: Táblák): Táblák = {
     val lépés = jelöldAzAknákat andThen takardKiANemAknákat
     implicit val újTábla :: régiTáblák = lépés(régi)
-    if (0 < (cellák count takart))
+    if (cellák exists takart)
       lépj(újTábla :: régiTáblák)
     else
       újTábla :: régiTáblák
   }
 
   val jelöldAzAknákat: Táblák => Táblák = { táblák =>
-    implicit val t: Tábla = táblák.head
-    keresdAzAknákat.foldLeft(táblák) {
+    keresdAzAknákat(táblák.head).foldLeft(táblák) {
       case (tábla :: előzőTáblák, (aknaX, aknaY)) =>
-        ténylegTakartAknaE(aknaX, aknaY, tábla)
+        jelezzHibátHaNemTakartAkna(aknaX, aknaY, tábla)
         takardKi(aknaX, aknaY, tábla) :: tábla :: előzőTáblák
     }
   }
@@ -168,7 +168,7 @@ object K2AknakeresoFunkcionálisLego {
   }
 
   def vanTakartSzomszédja(implicit tábla: Tábla): ((Int, Int)) => Boolean = {
-    implicit koordináták => (szomszédok count takart) > 0
+    implicit koordináták => szomszédok exists takart
   }
 
   def szomszédok(implicit koordináták: (Int, Int), tábla: Tábla): Set[(Int, Int)] = {
@@ -190,7 +190,7 @@ object K2AknakeresoFunkcionálisLego {
     case (x, y) => tábla(y)(x) == Akna
   }
 
-  def ténylegTakartAknaE(aknaX: Int, aknaY: Int, tábla: Tábla): Unit = {
+  def jelezzHibátHaNemTakartAkna(aknaX: Int, aknaY: Int, tábla: Tábla): Unit = {
     tábla(aknaY)(aknaX) match {
       case TakartAkna => // OK
       case _ => println(aknaX, aknaY, " nem takart akna, pedig úgy számoltuk, hogy az")
@@ -205,6 +205,7 @@ object K2AknakeresoFunkcionálisLego {
         case Szám(n) => TakartSzám(n)
       }
 
+  //noinspection TypeAnnotation
   def takardKiASzomszédokat(táblák: Táblák, koordináták: (Int, Int)): Táblák = {
     implicit val t = táblák.head
     implicit val kk = koordináták
@@ -244,6 +245,7 @@ object K2AknakeresoFunkcionálisLego {
 
   def nullaSzomszédokSzomszédjai(nulla: (Int, Int), tábla: Tábla): Set[(Int, Int)] = {
 
+    //noinspection TypeAnnotation
     def loop(szomszédokEddig: Set[(Int, Int)], c: (Int, Int)): Set[(Int, Int)] = {
       if (szomszédok(c, tábla).forall(szomszédokEddig.contains))
         szomszédokEddig
