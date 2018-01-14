@@ -43,6 +43,11 @@ object K2AknakeresoFunkcionálisLego {
     val c = rakd(2, 1, üres)
     val cVégjáték = c.
       updated(0, c(0).updated(4, TakartSzám(0))).
+    val a = rakjAknát(üres, (0, 0), (1, 0), (4, 2))
+    val b = rakjAknát(üres, 0, 1)
+    val c = rakjAknát(üres, 2, 1)
+    val cVégjáték = c.
+      updated(0, c(0).updated(4, TakartSzám(0))).
       updated(1, c(1).updated(4, TakartSzám(0))).
       updated(2, c(2).updated(4, TakartSzám(0)))
 
@@ -203,23 +208,21 @@ object K2AknakeresoFunkcionálisLego {
 
   def takardKi(kiX: Int, kiY: Int, tábla: Tábla): Tábla = {
 
-    def loop(tábla: Tábla, c: (Int, Int)): Tábla = {
+    def takarjKiCsakEgyet(tábla: Tábla, c: (Int, Int)): Tábla = {
       val (x, y) = c
       tábla(y)(x) match {
         case TakartSzám(n) =>
           újTábla(tábla, x, y, Szám(n))
         case TakartAkna =>
           újTábla(tábla, x, y, Akna)
-        case _ =>
-          tábla
       }
     }
 
     tábla(kiY)(kiX) match {
       case TakartSzám(0) =>
-        nullaSzomszédokSzomszédjai((kiX, kiY), tábla).foldLeft(tábla)(loop)
+        nullaSzomszédokSzomszédjai((kiX, kiY), tábla).foldLeft(tábla)(takarjKiCsakEgyet)
       case _ =>
-        loop(tábla, (kiX, kiY))
+        takarjKiCsakEgyet(tábla, (kiX, kiY))
     }
   }
 
@@ -227,22 +230,20 @@ object K2AknakeresoFunkcionálisLego {
 
     //noinspection TypeAnnotation
     def loop(szomszédokEddig: Set[(Int, Int)], c: (Int, Int)): Set[(Int, Int)] = {
-      if (szomszédok(c, tábla).forall(szomszédokEddig.contains))
-        szomszédokEddig
-      else tábla(c._2)(c._1) match {
+      implicit val cella = c
+      implicit val t = tábla
+      val (x, y) = c
+
+      tábla(y)(x) match {
         case TakartSzám(0) =>
-          implicit val cella = c
-          implicit val t = tábla
           (szomszédok + c -- szomszédokEddig).foldLeft(szomszédok + c ++ szomszédokEddig)(loop)
         case _ =>
-          szomszédokEddig + c
+          (szomszédokEddig + c).filter(takart)
       }
     }
 
     loop(Set(), nulla)
   }
-
-  def újTábla(tábla: Tábla, x: Int, y: Int, cella: Cella): Tábla = tábla.updated(y, tábla(y).updated(x, cella))
 
   def takartNullaSzám(implicit tábla: Tábla): ((Int, Int)) => Boolean = {
     case ((x, y)) => tábla(y)(x) match {
@@ -251,7 +252,11 @@ object K2AknakeresoFunkcionálisLego {
     }
   }
 
-  def rakd(rakdX: Int, rakdY: Int, tábla: Tábla): Tábla =
+  def újTábla(tábla: Tábla, x: Int, y: Int, cella: Cella): Tábla = tábla.updated(y, tábla(y).updated(x, cella))
+
+  def rakjAknát(tábla: Tábla, hova: (Int, Int)*): Tábla = hova.foldLeft(tábla) { case (t, (x, y)) => rakjAknát(t, x, y) }
+
+  def rakjAknát(tábla: Tábla, rakdX: Int, rakdY: Int): Tábla =
     List.tabulate(tábla.size, tábla.head.size) {
       case (`rakdY`, `rakdX`) =>
         Akna
