@@ -33,48 +33,31 @@ zipWithIndex
  */
 object K2AknakeresoFunkcionálisLego {
 
-  //noinspection ZeroIndexToHead
   def main(args: Array[String]): Unit = {
 
     val üres = List.tabulate(3, 5) { (_, _) => Szám(0) }
 
-    val a = rakd(0, 0, rakd(1, 0, rakd(4, 2, üres)))
-    val b = rakd(0, 1, üres)
-    val c = rakd(2, 1, üres)
-    val cVégjáték = c.
-      updated(0, c(0).updated(4, TakartSzám(0))).
     val a = rakjAknát(üres, (0, 0), (1, 0), (4, 2))
     val b = rakjAknát(üres, 0, 1)
     val c = rakjAknát(üres, 2, 1)
-    val cVégjáték = c.
-      updated(0, c(0).updated(4, TakartSzám(0))).
-      updated(1, c(1).updated(4, TakartSzám(0))).
-      updated(2, c(2).updated(4, TakartSzám(0)))
+    val d = rakjAknát(üres, (0, 0), (1, 0), (1, 1), (3, 1), (0, 2), (4, 2))
 
     view.AknakeresőKonzolon.írdKiEgymásMellé(
-      a, b, c, c, a, cVégjáték
+      a, b, c, c, a, d
     )
     println
 
     val jólElkezdettA = takardKi(0, 2, takardBeMind(a))
     val jólElkezdettB = takardKi(0, 0, takardKi(1, 0, takardKi(1, 1, takardBeMind(b))))
     val jólElkezdettC = takardKi(0, 0, takardKi(2, 0, takardBeMind(c)))
+    val jólElkezdettD = takardKi(3, 0, takardKi(4, 0, takardKi(4, 1, takardBeMind(d))))
     view.AknakeresőKonzolon.írdKiEgymásMellé(
       takardKi(3, 0, takardBeMind(a)),
       takardKi(3, 0, takardBeMind(b)),
       takardKi(3, 0, takardBeMind(c)),
       jólElkezdettC,
-      jólElkezdettA
-    )
-    println
-
-    view.AknakeresőKonzolon.írdKiEgymásMellé(
-      c :: oldMegLépésenként(cVégjáték)
-    )
-    println
-
-    view.AknakeresőKonzolon.írdKiEgymásMellé(
-      a :: oldMegLépésenként(jólElkezdettA)
+      jólElkezdettA,
+      jólElkezdettD
     )
     println
 
@@ -86,17 +69,26 @@ object K2AknakeresoFunkcionálisLego {
     view.AknakeresőKonzolon.írdKiEgymásMellé(
       c :: oldMegLépésenként(jólElkezdettC)
     )
+    println
+
+    view.AknakeresőKonzolon.írdKiEgymásMellé(
+      a :: oldMegLépésenként(jólElkezdettA)
+    )
+    println
+
+    view.AknakeresőKonzolon.írdKiEgymásMellé(
+      d :: oldMegLépésenként(jólElkezdettD)
+    )
   }
 
   def oldMegLépésenként(kiindulóTábla: Tábla): Táblák = {
     lépj(List(kiindulóTábla)).reverse
   }
 
-  //noinspection ConvertibleToMethodValue
   def lépj(régi: Táblák): Táblák = {
     val lépés = jelöldAzAknákat andThen takardKiANemAknákat
     implicit val újTábla :: régiTáblák = lépés(régi)
-    if (cellák exists takart)
+    if (újTábla != régi.head)
       lépj(újTábla :: régiTáblák)
     else
       újTábla :: régiTáblák
@@ -116,14 +108,16 @@ object K2AknakeresoFunkcionálisLego {
     takartSzomszédjaiNemAknák.foldLeft(táblák)(takardKiASzomszédokat)
   }
 
-  def keresdAzAknákat(implicit tábla: Tábla): KoordinátaLista =
-    (cellák flatMap { implicit koordináták =>
+  def keresdAzAknákat(implicit tábla: Tábla): KoordinátaLista = (cellák flatMap aknák).distinct
+
+  def aknák(implicit tábla: Tábla): ((Int, Int)) => Set[(Int, Int)] = {
+    implicit koordináták =>
 
       if ((nemNullaSzám getOrElse -1) == (szomszédok count takart) + (szomszédok count látszódóAkna))
         szomszédok filter takart
       else
-        List()
-    }).distinct
+        Set()
+  }
 
   def jelezzHibátHaNemTakartAkna(aknaX: Int, aknaY: Int, tábla: Tábla): Unit = {
     tábla(aknaY)(aknaX) match {
@@ -139,13 +133,12 @@ object K2AknakeresoFunkcionálisLego {
   } yield (x, y)
 
   def szomszédok(implicit koordináták: (Int, Int), tábla: Tábla): Set[(Int, Int)] = {
-    val szk: Set[(Int, Int)] = koordináták match {
-      case (x, y) => for (q <- ListSet(
-        (x - 1, y - 1), (x, y - 1), (x + 1, y - 1),
-        (x - 1, y), /*           */ (x + 1, y),
-        (x - 1, y + 1), (x, y + 1), (x + 1, y + 1))) yield q
-    }
-
+    val (x, y) = koordináták
+    val szk = ListSet(
+      (x - 1, y - 1), (x, y - 1), (x + 1, y - 1),
+      (x - 1, y), /*           */ (x + 1, y),
+      (x - 1, y + 1), (x, y + 1), (x + 1, y + 1)
+    )
     szk filter rajtaVanATáblán
   }
 
@@ -212,9 +205,9 @@ object K2AknakeresoFunkcionálisLego {
       val (x, y) = c
       tábla(y)(x) match {
         case TakartSzám(n) =>
-          újTábla(tábla, x, y, Szám(n))
+          módosítottTábla(tábla, x, y, Szám(n))
         case TakartAkna =>
-          újTábla(tábla, x, y, Akna)
+          módosítottTábla(tábla, x, y, Akna)
       }
     }
 
@@ -252,7 +245,7 @@ object K2AknakeresoFunkcionálisLego {
     }
   }
 
-  def újTábla(tábla: Tábla, x: Int, y: Int, cella: Cella): Tábla = tábla.updated(y, tábla(y).updated(x, cella))
+  def módosítottTábla(tábla: Tábla, x: Int, y: Int, cella: Cella): Tábla = tábla.updated(y, tábla(y).updated(x, cella))
 
   def rakjAknát(tábla: Tábla, hova: (Int, Int)*): Tábla = hova.foldLeft(tábla) { case (t, (x, y)) => rakjAknát(t, x, y) }
 
