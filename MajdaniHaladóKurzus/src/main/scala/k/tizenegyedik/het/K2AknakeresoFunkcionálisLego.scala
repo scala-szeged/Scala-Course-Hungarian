@@ -4,33 +4,6 @@ import model.AknakeresoModel._
 
 import scala.collection.immutable.ListSet
 
-/*
-Példát csináltam rá:
-foldRight - ezek a foldLeft -ek lecserélhetőek foldRight -ra
-map - for + yield lecserélhető rá
-fill - üres tábla előállítása
-tabulate - rakd
-
-
-Ötletek:
-colllect - szomszédok
-concat - lépj átszervezése: ne Táblák, csak Tábla legyen, amiket visszaadnak, azokat concat -tal egybe fűzhetjük
-exists - Tábla.cellák bevezetésekor a vanMégTakartCella átszervezhető exists -re
-filter - szomszédok mint collection bevezetésekor takartSzomszédok átszervezhető filter -re
-intersect - takartSzomszédok
-isEmpty - vanMégTakartCella
-partition - Tábla.cellák bevezetésekor a takart és a nem takart cellák mint collection -ök előállítására
-range - startX to endX helyett
-updated - több helyen használható, talán sehol sem célszerű
-
-
-Már használatban volt:
-foldLeft
-head
-mkString a kiíratáskor
-reverse
-zipWithIndex
- */
 object K2AknakeresoFunkcionálisLego {
 
   def main(args: Array[String]): Unit = {
