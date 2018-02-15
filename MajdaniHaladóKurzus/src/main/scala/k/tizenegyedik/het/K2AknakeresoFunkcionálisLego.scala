@@ -162,21 +162,17 @@ object K2AknakeresoFunkcionálisLego {
     case (x, y) => tábla(y)(x) == Akna
   }
 
-  //noinspection MatchToPartialFunction
-  def összesAknájaLátszódik(implicit tábla: Tábla): ((Int, Int)) => Boolean = {
-    implicit koordináták: (Int, Int) =>
-      koordináták match {
-        case ((x, y)) => tábla(y)(x) match {
-          case Szám(0) =>
-            false
+  def összesAknájaLátszódik(implicit tábla: Tábla): PartialFunction[(Int, Int), (Int, Int)] = {
+    case ((x, y)) if
 
-          case Szám(n) =>
-            n == (szomszédok count látszódóAkna)
+    (Some(tábla(y)(x)) collect {
+      case Szám(n) if n > 0 => n // van aknája
 
-          case _ =>
-            false
-        }
-      }
+    }).getOrElse(-1) == (szomszédok((x, y), tábla) count látszódóAkna)
+
+    =>
+
+      (x, y)
   }
 
   def vanTakartSzomszédja(implicit tábla: Tábla): ((Int, Int)) => Boolean = {
