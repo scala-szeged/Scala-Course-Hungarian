@@ -104,7 +104,7 @@ object K2AknakeresoFunkcionálisLego {
 
   val takardKiANemAknákat: Táblák => Táblák = { táblák =>
     implicit val tábla: Tábla = táblák.head
-    val takartSzomszédjaiNemAknák = cellák filter összesAknájaLátszódik filter vanTakartSzomszédja
+    val takartSzomszédjaiNemAknák = cellák collect összesAknájaLátszódik filter vanTakartSzomszédja
     takartSzomszédjaiNemAknák.foldLeft(táblák)(takardKiASzomszédokat)
   }
 
