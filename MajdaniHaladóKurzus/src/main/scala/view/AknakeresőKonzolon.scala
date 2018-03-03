@@ -10,17 +10,6 @@ object AknakeresőKonzolon {
   }
 
   def írdKiEgymásMellé(táblák: List[Tábla]): Unit = {
-
-    def cellánkéntString(tábla: Tábla): List[List[String]] = {
-      for (sor <- tábla) yield
-        for (cella <- sor) yield cella match {
-          case Akna => "*"
-          case Szám(n) => n.toString
-          case TakartAkna => "."
-          case TakartSzám(_) => "."
-        }
-    }
-
     val elválasztó = "   "
 
     println(
@@ -61,6 +50,18 @@ object AknakeresőKonzolon {
     34   89
 
      */
+  }
+
+  def írdKi(tábla: Tábla): Unit = println(cellánkéntString(tábla).map(_.mkString).mkString("\n"))
+
+  def cellánkéntString(tábla: Tábla): List[List[String]] = {
+    for (sor <- tábla) yield
+      for (cella <- sor) yield cella match {
+        case Akna => "*"
+        case Szám(n) => n.toString
+        case TakartAkna => "."
+        case TakartSzám(_) => "."
+      }
   }
 
 }
