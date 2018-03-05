@@ -4,43 +4,47 @@ import java.lang.Math.{max, min}
 
 object L1Tetrisz {
 
+  type Pálya = List[List[String]]
+  type Lépés = (Pálya, (Int, Int)) => (Pálya, (Int, Int))
+
   val pályaMagasság = 6
   val kezdőPont: (Int, Int) = (2, 0)
 
-  type Pálya = List[List[String]]
-  type Lépés = (Pálya, (Int, Int)) => (Pálya, (Int, Int))
+  val felsőSor = List("X", " ", " ", " ", " ", "X")
+  val alsóSor = List("X", "X", "X", "X", "X", "X")
+
 
   def main(args: Array[String]): Unit = {
     val elemek = List(
       List(List("a", "b"), List(null, "c")),
-      List(List("A", "B"), List(null, "C"))
+      List(List("A", "B"), List("C", "D")),
+      List(List(null, "E"), List(null, "F"))
     )
-    val pálya = List.fill(pályaMagasság)(List("X", " ", " ", " ", " ", "X")) :::
-      List(List("X", "X", "X", "X", "X", "X"))
-
-    val pályaB = List(List("1", "2", "3"), List("4", "5", "6"), List("7", "8", "9"))
+    val pálya = List.fill(pályaMagasság)(felsőSor) ::: List(alsóSor)
 
     írdKiEgymásMellé(
       lépj(elemek, pálya,
+        ejtsd,
+        // HIBÁT IDÉZ ELŐ: ejtsd
         semmi, forduljBalra, forduljBalra, jobbra,
-        semmi, semmi, balra, semmi, /* ↻ ↺  ← →  ↓ */ semmi, semmi)
+        semmi, semmi, balra, semmi, semmi, semmi,
+        // HIBÁT IDÉZ ELŐ: ejtsd
+        jobbra, semmi, semmi, semmi, semmi, semmi
+      )
     )
   }
 
 
   def lépj(elemek: List[Pálya], pálya: Pálya, lépések: Lépés*): List[Pálya] = {
     val elsőPálya = rakdRá(elemek.head, kezdőPont, pálya)
+
     val (_, _, _, pályaLista) = lépések.foldLeft((elemek, kezdőPont, pálya, List(elsőPálya))) {
 
-      case ((e1 :: többiElem, (x, y), háttér, pályák), lépés) if földetért(e1, x, y, háttér) =>
-        if (többiElem.nonEmpty) {
-          val e2 = többiElem.head
-          val újHáttér = rakdRá(e1, (x, y), háttér)
-          val újPálya = rakdRá(e2, kezdőPont, újHáttér)
-          (többiElem, kezdőPont, újHáttér, újPálya :: pályák)
-        } else {
-          (Nil, (x, y), háttér, pályák)
-        }
+      case ((e :: többiElem, (x, y), háttér, pályák), `ejtsd`) =>
+        ejtsdLe(e, többiElem, kezdőPont, pálya, List(elsőPálya))
+
+      case ((e1 :: többiElem, hova, háttér, pályák), lépés) if földetért(e1, hova, háttér) =>
+        következő(e1, többiElem, hova, háttér, pályák)
 
       case ((e :: et, (x, y), háttér, pályák), lépés) =>
         val (újElem, (újX, újY)) = lépés(e, (x, y))
@@ -64,13 +68,14 @@ object L1Tetrisz {
     }
   }
 
-  def földetért(elem: Pálya, x: Int, y: Int, háttér: Pálya): Boolean = {
+  def földetért(elem: Pálya, hol: (Int, Int), háttér: Pálya): Boolean = {
     val alsóSor = elem.last
     alsóSor.zipWithIndex.exists {
       case (null, _) =>
         false
 
       case (_, index) =>
+        val (x, y) = hol
         háttér(y + elem.size)(x + index) != " "
     }
   }
@@ -95,6 +100,33 @@ object L1Tetrisz {
     case (elem, (x, y)) => (elem, (x, y))
   }
 
+  def ejtsdLe(elem: Pálya, többiElem: List[Pálya], honnan: (Int, Int), háttér: Pálya, pályák: List[Pálya])
+  : (List[Pálya], (Int, Int), Pálya, List[Pálya])
+  = {
+    if (földetért(elem, honnan, háttér)) {
+      következő(elem, többiElem, honnan, háttér, pályák)
+
+    } else {
+
+      val (x, y) = honnan
+      ejtsdLe(elem, többiElem, (x, y + 1), háttér, pályák)
+    }
+  }
+
+  def következő(e1: Pálya, többiElem: List[Pálya], hova: (Int, Int), háttér: Pálya, pályák: List[Pálya])
+  : (List[Pálya], (Int, Int), List[List[String]], List[Pálya])
+  = {
+    if (többiElem.nonEmpty) {
+      val e2 = többiElem.head
+      val h = rakdRá(e1, hova, háttér)
+      val újHáttér = if (h.dropRight(1).last.contains(" ")) h else felsőSor :: h.dropRight(2) ::: List(alsóSor)
+      val újPálya = rakdRá(e2, kezdőPont, újHáttér)
+      (többiElem, kezdőPont, újHáttér, újPálya :: pályák)
+    } else {
+      (Nil, hova, háttér, pályák)
+    }
+  }
+
   def rakdRá(elem: Pálya, hova: (Int, Int), pálya: Pálya): Pálya = {
     val (x, y) = hova
     elem.zipWithIndex.foldLeft(pálya) {
@@ -117,7 +149,4 @@ object L1Tetrisz {
   }
 
   def írdKi(pálya: Pálya): Unit = println(pálya.map(_.mkString).mkString("\n"))
-
-
-  //  def írdKi(pálya: List[List[Any]]): Unit = println(pálya.map(_.mkString * 2).mkString("\n"))
 }
