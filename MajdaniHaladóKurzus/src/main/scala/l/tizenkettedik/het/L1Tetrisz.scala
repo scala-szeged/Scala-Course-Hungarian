@@ -5,7 +5,7 @@ import java.lang.Math.{max, min}
 object L1Tetrisz {
 
   type Pálya = List[List[String]]
-  type Lépés = (Pálya, (Int, Int)) => (Pálya, (Int, Int))
+  type Lépés = (Pálya, List[Pálya], (Int, Int), Pálya, List[Pálya]) => (Pálya, List[Pálya], (Int, Int), Pálya, List[Pálya])
 
   val pályaMagasság = 6
   val kezdőPont: (Int, Int) = (2, 0)
