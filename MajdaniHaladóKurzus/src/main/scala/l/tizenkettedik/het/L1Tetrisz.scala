@@ -24,8 +24,10 @@ object L1Tetrisz {
 
     írdKiEgymásMellé(
       lépj(elemek, pálya,
+
+        // HIBÁT IDÉZ ELŐ:
         ejtsd,
-        // HIBÁT IDÉZ ELŐ: ejtsd
+
         semmi, forduljBalra, forduljBalra, jobbra,
         semmi, semmi, balra, semmi, semmi, semmi,
         // HIBÁT IDÉZ ELŐ: ejtsd
@@ -58,7 +60,7 @@ object L1Tetrisz {
       case ((Nil, (x, y), háttér, pályák), _) =>
         (Nil, (x, y), háttér, pályák)
     }
-    pályaLista.reverse.zip(lépések).map {
+    pályaLista.reverse.zip(semmi :: lépések.toList).map {
       case (p, `forduljBalra`) => p ::: List(List("  ↺   "))
       case (p, `forduljJobbra`) => p ::: List(List("  ↻  "))
       case (p, `balra`) => p ::: List(List("  ←   "))
