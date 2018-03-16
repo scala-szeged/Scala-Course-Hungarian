@@ -25,12 +25,11 @@ object L1Tetrisz {
     írdKiEgymásMellé(
       lépj(elemek, pálya,
 
-        // HIBÁT IDÉZ ELŐ:
-        ejtsd,
-
         semmi, forduljBalra, forduljBalra, jobbra,
+        ejtsd,
         semmi, semmi, balra, semmi, semmi, semmi,
-        // HIBÁT IDÉZ ELŐ: ejtsd
+
+
         jobbra, semmi, semmi, semmi, semmi, semmi
       )
     )
@@ -43,19 +42,21 @@ object L1Tetrisz {
     val (_, _, _, pályaLista) = lépések.foldLeft((elemek, kezdőPont, pálya, List(elsőPálya))) {
 
       case ((e :: többiElem, (x, y), háttér, pályák), `ejtsd`) =>
-        ejtsdLe(e, többiElem, kezdőPont, pálya, List(elsőPálya))
+        ejtsdLe(e, többiElem, kezdőPont, háttér, pályák)
 
       case ((e1 :: többiElem, hova, háttér, pályák), lépés) if földetért(e1, hova, háttér) =>
         következő(e1, többiElem, hova, háttér, pályák)
 
       case ((e :: et, (x, y), háttér, pályák), lépés) =>
-        val (újElem, (újX, újY)) = lépés(e, (x, y))
+        // Vagy az elem, vagy x vagy y módosul
+        val (módosítottElem, (újX, újY)) = lépés(e, (x, y))
+
         val hova = (
           min(max(újX, 1), pálya.head.size - 3),
           min(max(újY + 1, 0), pálya.size - 2)
         )
-        val újPálya = rakdRá(újElem, hova, háttér)
-        (újElem :: et, hova, háttér, újPálya :: pályák)
+        val újPálya = rakdRá(módosítottElem, hova, háttér)
+        (módosítottElem :: et, hova, háttér, újPálya :: pályák)
 
       case ((Nil, (x, y), háttér, pályák), _) =>
         (Nil, (x, y), háttér, pályák)
@@ -145,7 +146,7 @@ object L1Tetrisz {
   def írdKiEgymásMellé(pályák: List[Pálya]): Unit = {
     val elválasztó = "   "
 
-    println(
+    print(
       pályák.transpose.map(_.map(_.mkString).mkString(elválasztó)).mkString("\n")
     )
   }
