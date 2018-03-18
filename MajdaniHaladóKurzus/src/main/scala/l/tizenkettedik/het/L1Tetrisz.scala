@@ -28,7 +28,7 @@ object L1Tetrisz {
 
         semmi, forduljBalra, forduljBalra, jobbra,
         //ejtsd,
-        semmi, semmi, balra, semmi, semmi, semmi,
+        balra, semmi, semmi, semmi, semmi, semmi,
 
 
         jobbra, semmi, semmi, semmi, semmi, semmi
