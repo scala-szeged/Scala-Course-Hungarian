@@ -28,7 +28,7 @@ object L1Tetrisz {
 
         semmi, forduljBalra, forduljBalra, jobbra,
         //ejtsd,
-        balra, semmi, semmi, semmi, semmi, semmi,
+        semmi, balra, semmi, semmi, semmi, semmi,
 
 
         jobbra, semmi, semmi, semmi, semmi, semmi
@@ -70,8 +70,7 @@ object L1Tetrisz {
           false
 
         case (_, index) =>
-          val strings = háttér(y + elem.size)
-          strings(x + index) != " "
+          háttér(y + elem.size)(x + index) != " "
       }
   }
 
@@ -134,9 +133,12 @@ object L1Tetrisz {
       val h = rakdRá(e1, hova, háttér)
       val újHáttér = if (h.dropRight(1).last.contains(" ")) h else felsőSor :: h.dropRight(2) ::: List(alsóSor)
       val újPálya = rakdRá(e2, kezdőPont, újHáttér)
-      (többiElem, kezdőPont, újHáttér, újPálya :: pályák)
+      (e2 :: többiElem, kezdőPont, újHáttér, újPálya :: pályák)
 
-    case (_, hova, háttér, pályák) =>
+    case (egyElem :: _, hova, háttér, pályák) =>
+      (Nil, hova, háttér, pályák)
+
+    case (Nil, hova, háttér, pályák) =>
       (Nil, hova, háttér, pályák)
   }
 
