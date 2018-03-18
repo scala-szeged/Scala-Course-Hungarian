@@ -27,7 +27,7 @@ object L1Tetrisz {
       lépj(elemek, üresPálya,
 
         semmi, forduljBalra, forduljBalra, jobbra,
-        ejtsd,
+        //ejtsd,
         semmi, semmi, balra, semmi, semmi, semmi,
 
 
@@ -41,11 +41,11 @@ object L1Tetrisz {
     val elsőPálya = rakdRá(elemek.head, kezdőPont, pálya)
     val (_, _, _, pályaLista) = lépések.foldLeft((elemek, kezdőPont, pálya, List(elsőPálya))) {
 
-      case ((ek, (x, y), háttér, pályák), lépés) =>
-        lépés(ek, (x, y), háttér, pályák)
-
       case ((Nil, (x, y), háttér, pályák), _) =>
         (Nil, (x, y), háttér, pályák)
+
+      case ((ek, (x, y), háttér, pályák), lépés) =>
+        lépés(ek, (x, y), háttér, pályák)
     }
 
     pályaLista.reverse.zip(semmi :: lépések.toList).map {
@@ -63,14 +63,13 @@ object L1Tetrisz {
     case (Nil, hol: (Int, Int), háttér: Pálya) =>
       false
 
-    case (elem :: _, hol: (Int, Int), háttér: Pálya) =>
+    case (elem :: _, (x, y), háttér: Pálya) =>
       val alsóSor = elem.last
       alsóSor.zipWithIndex.exists {
         case (null, _) =>
           false
 
         case (_, index) =>
-          val (x, y) = hol
           val strings = háttér(y + elem.size)
           strings(x + index) != " "
       }
@@ -102,33 +101,35 @@ object L1Tetrisz {
   }
 
   val ejtsd: Lépés = {
-    case (elemek: List[Pálya], honnan: (Int, Int), háttér: Pálya, pályák: List[Pálya]) =>
+    case (elemek: List[Pálya], (x, y), háttér: Pálya, pályák: List[Pálya]) =>
 
-      if (földetért(elemek, honnan, háttér)) {
-        újElemFentről(elemek, honnan, háttér, pályák)
+      if (földetért(elemek, (x, y + 1), háttér)) {
+        újElemFentről(elemek, (x, y + 1), háttér, pályák)
 
       } else {
 
-        val (x, y) = honnan
         val _tovább = tovább(elemek, (x, y + 1), háttér, pályák)
         ejtsd.tupled(_tovább)
       }
   }
 
-  val tovább: Lépés = {
+  lazy val tovább: Lépés = {
+    case (Nil, hova, háttér: Pálya, pályák: List[Pálya]) =>
+      (Nil, hova, háttér, pályák)
+
     case (elemek, hova, háttér: Pálya, pályák: List[Pálya]) if földetért(elemek, hova, háttér) =>
       újElemFentről(elemek, hova, háttér, pályák)
 
     case (e :: többiElem, (újX, újY), háttér: Pálya, pályák: List[Pálya]) =>
       val hova = (
         min(max(újX, 1), üresPálya.head.size - 3),
-        min(max(újY + 1, 0), üresPálya.size - 2)
+        min(max(újY, 0), üresPálya.size - 2)
       )
       val újPálya = rakdRá(e, hova, háttér)
       (e :: többiElem, hova, háttér, újPálya :: pályák)
   }
 
-  val újElemFentről: Lépés = {
+  lazy val újElemFentről: Lépés = {
     case (e1 :: e2 :: többiElem, hova: (Int, Int), háttér: Pálya, pályák: List[Pálya]) =>
       val h = rakdRá(e1, hova, háttér)
       val újHáttér = if (h.dropRight(1).last.contains(" ")) h else felsőSor :: h.dropRight(2) ::: List(alsóSor)
