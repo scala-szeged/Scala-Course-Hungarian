@@ -9,9 +9,9 @@ object A1Lista extends App {
     c <- 1 to 10
     b <- 1 to c
     a <- 1 to b
-    if a * a + b * b == c * c // háromszög
 
-    if a + b + c == 24 // kerülete 24
+    if a * a + b * b == c * c // háromszög
+    if a + b + c == 24 // kerülete 24 egység
   }
     yield (a, b, c)
 
