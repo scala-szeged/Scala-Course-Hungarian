@@ -1,13 +1,11 @@
-scalaVersion := "2.12.4"
+scalaVersion := "2.12.6"
+
+lazy val Szeptember2018 = project
 
 lazy val Szeptember2017 = project
-  .settings(scalaVersion := "2.12.4")
 
 lazy val MajdaniHaladóKurzus = project
-  .settings(scalaVersion := "2.12.4")
 
 lazy val FpInScalaExercises = project
-  .settings(scalaVersion := "2.12.4")
 
 lazy val CatsExamplesByTypelevelOrg = project
-  .settings(scalaVersion := "2.12.4")
