@@ -1,8 +1,3 @@
-// konstans definiálása (immutable)
-
-val vasSzálHossza = 150
-
-
 
 // nem kötelező a zárójel
 // függvény, illetve metódus hívásakor ha nincs paramétere

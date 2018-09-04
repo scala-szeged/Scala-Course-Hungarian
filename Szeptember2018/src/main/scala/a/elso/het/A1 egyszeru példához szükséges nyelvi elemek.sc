@@ -1,4 +1,4 @@
-val számok1 = for {
+val számok1 = for { // konstans definiálása (immutable)
   c <- 1 to 10 // c-be kerüljenek bele a számok 1-től 10-ig
   if c > 8 // szűrés
 }
