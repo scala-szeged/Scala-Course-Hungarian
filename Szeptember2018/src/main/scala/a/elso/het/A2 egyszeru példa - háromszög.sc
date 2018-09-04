@@ -1,6 +1,7 @@
 // http://learnyouahaskell.com/starting-out#an-intro-to-lists
 // Haskell kód:
-// let rightTriangles' = [ (a,b,c) | c <- [1..10], b <- [1..c], a <- [1..b], a^2 + b^2 == c^2, a+b+c == 24]
+// let rightTriangles' =
+// [ (a,b,c) | c <- [1..10], b <- [1..c], a <- [1..b], a^2 + b^2 == c^2, a+b+c == 24]
 
 val háromszög = for {
   c <- 1 to 10

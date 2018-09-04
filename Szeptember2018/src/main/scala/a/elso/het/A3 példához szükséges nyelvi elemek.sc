@@ -19,7 +19,7 @@ val összesVasRúd = List(47, 11, 30).sorted
 
 
 // def kulcsszóval kezdődik a függvény definíciója
-// : List[Int] - paraméter illetve visszatérési érték
+// List[Int] - paraméter illetve visszatérési érték
 // típusának definiálása
 
 // függvény definíciójának elején (most a  { -jel előtt)
