@@ -19,7 +19,7 @@ def fordítsdMeg = ???
 
 // 7. Mi az eredmény, ha fejnek a fejét kérjük megoldásokra?
 // 8. Mi az eredmény, ha maradéknak a fejét kérjük megoldásokra?
-// 8. Mi az eredmény, ha maradék maradékának a fejét kérjük megoldásokra?
+// 9. Mi az eredmény, ha maradék maradékának a fejét kérjük megoldásokra?
 val megoldások = List(
   List(1, 2, 3, 4, 5),
   List('a', 'b'),
