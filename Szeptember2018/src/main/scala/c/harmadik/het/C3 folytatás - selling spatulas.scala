@@ -2,6 +2,7 @@
 object C3SellingSpatulas {
 
   def main(args: Array[String]): Unit = {
+    // val tartalom = scala.io.Source.fromInputStream(System.in)
     val tartalom = scala.io.Source.fromFile("Szeptember2018/src/main/scala/c/harmadik/het/Sample Input.txt")
     val sorok: Iterator[String] = tartalom.getLines()
 
