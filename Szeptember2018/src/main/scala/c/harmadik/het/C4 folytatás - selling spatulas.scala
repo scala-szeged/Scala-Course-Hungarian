@@ -1,5 +1,5 @@
 
-object C3SellingSpatulas {
+object C4SellingSpatulas {
 
   def main(args: Array[String]): Unit = {
     // val tartalom = scala.io.Source.fromInputStream(System.in)
@@ -29,6 +29,7 @@ object C3SellingSpatulas {
           printMaxProfit(boltSorai)
           következőBolt(többiSor.drop(n))
         }
+
     }
   }
 
@@ -36,6 +37,7 @@ object C3SellingSpatulas {
     var maxP = Double.MinValue
     var maxEp = 0
     var maxUp = 0
+
     for (első <- list.indices; utolsó <- első to list.indices.last) {
       val részLista = list.slice(from = első, until = utolsó + 1)
 

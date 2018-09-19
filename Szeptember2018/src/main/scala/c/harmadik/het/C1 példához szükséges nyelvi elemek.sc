@@ -1,37 +1,57 @@
 
-val list = List(1,2,3)
-list.head // 0. elem
-list.tail // a maradék az 1. elemtől kezdve
+// beolvasás előkészítése a standard inputról,
+// ahova a felhasználó gépel
+// val tartalom = scala.io.Source.fromInputStream(System.in)
 
-List(10).head // 10 -es szám
-List(10).tail // üres lista
+// beolvasás előkészítése fájlból
+// val tartalom = scala.io.Source.fromFile("Sample Input.txt")
 
-// :: az ami a lista elejére fűz
-"a" :: List("b")
+// beolvasás soronként
+// Iterator egyszer járható be
+// sorok.toList -val listává alakítjuk, ha többször kell bejárni
+//val sorok: Iterator[String] = tartalom.getLines()
 
+val sorA = Right("5".toInt)
 
-// metódus, más néven függvény definíciója
-def darabold() { ??? }
+// perc és bevétel 2 db konstans (val) kap értéket
+"15 0.37".split(" ") //Array split eredménye
+val Array(perc, bevétel) = "15 0.37".split(" ")
+val sorB = Left((perc.toInt, bevétel.toDouble))
 
-
-// metódus és annak paramétere
-// vasSzál - paraméter neve
-// Int - paraméter típusa
-def darabold(vasSzál: Int) { ??? }
-
-
-// metódus
-// írdFel - paraméterként átadott metódus
-//          listát kap és semmit nem ad vissza
-//          List[Int]     Unit
-def darabold(írdFel: List[Int] => Unit) { ??? }
+val boltokAbSoria = List(sorA, sorB)
 
 
-// A lista minden elemére külön println
-list.foreach(println)
+val sorok = List("5", "15 0.37")
+val boltokSoria = sorok.map { sor =>
+  if (sor.contains(" ")) {
+    val Array(perc, bevétel) = sor.split(" ")
+    Left((perc.toInt, bevétel.toDouble))
+  } else {
+    Right(sor.toInt)
+  }
+}
 
-// összeg
-list.sum
+következőSor(boltokSoria)
 
-// méret, elemek száma
-list.size
+def következőSor(boltokSoria: List[Either[(Int, Double), Int]]): Unit = {
+  boltokSoria match {
+    case Right(n) :: többiSor =>
+      println(n)
+      következőSor(többiSor)
+
+    case Left((perc, bevétel)) :: többiSor =>
+      println(perc, bevétel)
+      következőSor(többiSor)
+
+    case List() => // nem csinálunk semmit, vége a rekurziónak
+  }
+}
+// match a Java switch helyett van
+
+//      case Right(n) :: többiSor =>
+// szétbontás történik a :: segítségével head :: tail formában,
+// ahol head a 0. elem, tail pedig a további elemek listája
+// n értéke a 0. elem mint Right-ból lesz kivéve
+
+//     case Left((perc, bevétel)) :: többiSor =>
+// perc és bevétel a 0. elem mint Left-ből lesz kiszedve
