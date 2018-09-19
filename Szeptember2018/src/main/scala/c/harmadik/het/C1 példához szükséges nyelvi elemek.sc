@@ -11,15 +11,16 @@
 // sorok.toList -val listává alakítjuk, ha többször kell bejárni
 //val sorok: Iterator[String] = tartalom.getLines()
 
-val sorA = Right("5".toInt)
+val sorA = Right("5".toInt) //> Right[Nothing,Int] = Right(5)
 
 // perc és bevétel 2 db konstans (val) kap értéket
-"15 0.37".split(" ") //Array split eredménye
-val Array(perc, bevétel) = "15 0.37".split(" ")
-val sorB = Left((perc.toInt, bevétel.toDouble))
+"15 0.37".split(" ") //Array split eredménye //> res15: Array[String] = Array(15, 0.37)
+val Array(perc, bevétel) = "15 0.37".split(" ") //> perc: String = 15, bevétel: String = 0.37
+val sorB = Left((perc.toInt, bevétel.toDouble)) //> Left[(Int, Double),Nothing] = Left((15,0.37))
 
-val boltokAbSoria = List(sorA, sorB)
+val boltokAbSoria = List(sorA, sorB) //> List[Either[(Int, Double),Int]] = List(Right(5), Left((15,0.37)))
 
+val intek = List("4","5").map(str => str.toInt) //> List[Int] = List(4, 5)
 
 val sorok = List("5", "15 0.37")
 val boltokSoria = sorok.map { sor =>
