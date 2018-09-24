@@ -44,8 +44,8 @@ object C4SellingSpatulas {
       val bevételek = részLista.map(sor => sor._2)
       val öszBevétel = bevételek.sum
 
-      val elsőPerc = list(első)._1
-      val utolsóPerc = list(utolsó)._1
+      val elsőPerc = részLista.head._1
+      val utolsóPerc = részLista.last._1
       val öszKiadás = (utolsóPerc - elsőPerc + 1) * 0.08
 
       if (maxP < öszBevétel - öszKiadás) {
