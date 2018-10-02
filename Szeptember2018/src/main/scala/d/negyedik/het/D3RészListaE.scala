@@ -16,15 +16,15 @@ trait ListKezelő[A] {
         case (List(), _ :: _) =>
           false
 
-        case (a :: aTovább, b :: bTovább) =>
+        case (a :: teljesTovább, b :: részTovább) =>
           if (a == b)
-            loop(aTovább, bTovább)
+            loop(teljesTovább, részTovább)
 
           else if (a == részElőlről.head)
-            loop(aTovább, részElőlről.tail)
+            loop(teljesTovább, részElőlről.tail)
 
           else
-            loop(aTovább, részElőlről)
+            loop(teljesTovább, részElőlről)
       }
 
     loop(teljesElőlről, részElőlről)
