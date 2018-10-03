@@ -6,21 +6,7 @@ object Solution {
    * Complete the timeConversion function below.
    */
   def timeConversion(s: String): String = {
-    s.replace(":", "").grouped(2).toList match {
-
-      case "12" :: min :: sec :: "AM" :: Nil =>
-        s"00:$min:$sec"
-
-      case hour :: min :: sec :: "AM" :: Nil =>
-        s"$hour:$min:$sec"
-
-      case "12" :: min :: sec :: "PM" :: Nil =>
-        s"12:$min:$sec"
-
-      case hour :: min :: sec :: "PM" :: Nil =>
-        s"${hour.toInt + 12}:$min:$sec"
-    }
-
+    s
   }
 
   def main(args: Array[String]) {
