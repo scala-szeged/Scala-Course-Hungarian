@@ -22,9 +22,12 @@ List(
   , "01:00:00PM"
   , "11:00:00PM"
   , "11:59:00PM"
-).map(timeConversion).foreach(println)
+)
+  .slice(0, 1)
+  .map(timeConversion).foreach(println)
 
 def timeConversion(s: String): String = {
   val time = s.replace(":", "").grouped(2).toList
+  println(time)
   s
 }
