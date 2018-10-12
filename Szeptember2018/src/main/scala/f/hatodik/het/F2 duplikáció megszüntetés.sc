@@ -26,9 +26,21 @@ def megszüntet(szó: String): String = {
 
   def loop(maradékSzó: List[Char], gyűjtött: List[Char]): List[Char] = (maradékSzó, gyűjtött) match {
 
+    case (ez :: többiBetű, List()) =>
+      loop(többiBetű, List(ez))
+
+    case (List(), mindenAmitGyűjtöttünk) =>
+      mindenAmitGyűjtöttünk
+
+    case (ez :: többiBetű, előző :: előzőElőttiBetűk) if ez == előző =>
+      loop(többiBetű, előző :: előzőElőttiBetűk)
+
+    case (ez :: többiBetű, előző :: előzőElőttiBetűk) if ez != előző =>
+      loop(többiBetű, ez :: előző :: előzőElőttiBetűk)
   }
 
-  loop(szó.toList, ???)
+  val eredmény = loop(szó.toList, List())
+  eredmény.reverse.mkString
 }
 
 megszüntet("bob") // eredmény: bob
