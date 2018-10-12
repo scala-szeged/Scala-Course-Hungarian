@@ -19,13 +19,12 @@ object I1 {
   }
 
   def process(szó: String) {
+    //if (szó.toList.toSet.size == szó.length)
+    //  {vmi optimálisabb}
 
     val eredmény = (1 until szó.length).foldLeft(1) {
       case (n, i) =>
-        val készlet = szó.sliding(i).foldLeft(Set.empty[String]) {
-          case (set, sz) => set + sz
-        }
-        //println(készlet)
+        val készlet = szó.sliding(i).toSet
         n + készlet.size
     }
 
