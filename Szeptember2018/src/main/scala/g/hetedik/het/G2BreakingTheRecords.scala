@@ -10,29 +10,14 @@ import java.util.function._
 import java.util.regex._
 import java.util.stream._
 
+// https://www.hackerrank.com/challenges/breaking-best-and-worst-records
+
 object Solution {
 
   // Complete the breakingRecords function below.
   def breakingRecords(scores: Array[Int]): Array[Int] = {
 
-    var min = Int.MaxValue
-    var max = Int.MinValue
-    var minSzáma = 0
-    var maxSzáma = 0
-
-    for (s <- scores) {
-
-      if (s < min) {
-        min = s
-        minSzáma += 1
-      }
-      if (s > max) {
-        max = s
-        maxSzáma += 1
-      }
-    }
-
-    Array(maxSzáma - 1, minSzáma - 1)
+    scores
   }
 
   def main(args: Array[String]) {
