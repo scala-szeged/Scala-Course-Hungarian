@@ -12,7 +12,7 @@ import java.util.stream._
 
 // https://www.hackerrank.com/challenges/breaking-best-and-worst-records
 
-object Solution {
+object Solution_breakingRecords {
 
   // Complete the breakingRecords function below.
   def breakingRecords(scores: Array[Int]): Array[Int] = {
