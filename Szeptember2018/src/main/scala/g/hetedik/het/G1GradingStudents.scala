@@ -2,6 +2,7 @@ package g.hetedik.het
 
 import java.io.PrintWriter
 
+// https://www.hackerrank.com/challenges/grading/problem
 
 object Solution {
 
@@ -9,15 +10,8 @@ object Solution {
    * Complete the gradingStudents function below.
    */
   def gradingStudents(grades: Array[Int]): Array[Int] = {
-    grades.map { g =>
 
-      if (g < 38)
-        g
-      else if (g % 5 < 3)
-        g
-      else
-        g + 5 - g % 5
-    }
+    grades
   }
 
   def main(args: Array[String]) {
