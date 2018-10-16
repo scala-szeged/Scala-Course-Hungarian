@@ -15,23 +15,28 @@ object Solution {
   }
 
   def main(args: Array[String]) {
-    val scan = scala.Console
+    println(
+      gradingStudents(Array(73, 67, 38, 33)).toList
+    )
+    /*
+        val scan = scala.Console
 
-    val fw = new PrintWriter(sys.env("OUTPUT_PATH"))
+        val fw = new PrintWriter(sys.env("OUTPUT_PATH"))
 
-    val n = scan.readLine.trim.toInt
+        val n = scan.readLine.trim.toInt
 
-    val grades = Array.ofDim[Int](n)
+        val grades = Array.ofDim[Int](n)
 
-    for (gradesItr <- 0 until n) {
-      val gradesItem = scan.readLine.trim.toInt
-      grades(gradesItr) = gradesItem
-    }
+        for (gradesItr <- 0 until n) {
+          val gradesItem = scan.readLine.trim.toInt
+          grades(gradesItr) = gradesItem
+        }
 
-    val result = gradingStudents(grades)
+        val result = gradingStudents(grades)
 
-    fw.println(result.mkString("\n"))
+        fw.println(result.mkString("\n"))
 
-    fw.close()
+        fw.close()
+    */
   }
 }

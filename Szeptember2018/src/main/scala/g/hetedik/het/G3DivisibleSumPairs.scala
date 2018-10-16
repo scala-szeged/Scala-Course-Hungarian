@@ -1,3 +1,5 @@
+package g.hetedik.het
+
 import java.io._
 import java.math._
 import java.security._
@@ -15,15 +17,7 @@ object Solution_divisibleSumPairs {
   // Complete the divisibleSumPairs function below.
   def divisibleSumPairs(n: Int, k: Int, ar: Array[Int]): Int = {
 
-    val összegek = for {
-      i <- ar.indices
-      j <- i + 1 until ar.size
-    } yield ar(i) + ar(j)
-
-    val jók = összegek.filter(ö => ö % k == 0)
-    println(jók.toList)
-
-    jók.size
+    0
   }
 
   def main(args: Array[String]) {

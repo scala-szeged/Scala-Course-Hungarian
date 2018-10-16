@@ -21,18 +21,23 @@ object Solution_breakingRecords {
   }
 
   def main(args: Array[String]) {
-    val stdin = scala.Console
+    println(
+      breakingRecords(Array(10, 5, 20, 20, 4, 5, 2, 25, 1)).toList
+    )
+    /*
+        val stdin = scala.Console
 
-    val printWriter = new PrintWriter(sys.env("OUTPUT_PATH"))
+        val printWriter = new PrintWriter(sys.env("OUTPUT_PATH"))
 
-    val n = stdin.readLine.trim.toInt
+        val n = stdin.readLine.trim.toInt
 
-    val scores = stdin.readLine.split(" ").map(_.trim.toInt)
-    val result = breakingRecords(scores)
+        val scores = stdin.readLine.split(" ").map(_.trim.toInt)
+        val result = breakingRecords(scores)
 
-    printWriter.println(result.mkString(" "))
+        printWriter.println(result.mkString(" "))
 
-    printWriter.close()
+        printWriter.close()
+    */
   }
 }
 
