@@ -1,14 +1,5 @@
 package g.hetedik.het
 
-import java.io._
-import java.math._
-import java.security._
-import java.text._
-import java.util._
-import java.util.concurrent._
-import java.util.function._
-import java.util.regex._
-import java.util.stream._
 
 // https://www.hackerrank.com/challenges/divisible-sum-pairs/problem
 
@@ -17,7 +8,14 @@ object Solution_divisibleSumPairs {
   // Complete the divisibleSumPairs function below.
   def divisibleSumPairs(n: Int, k: Int, ar: Array[Int]): Int = {
 
-    0
+    val összegek = for {
+      i <- ar.indices
+      j <- i + 1 until ar.size
+    } yield ar(i) + ar(j)
+
+    val jók = összegek.filter(ö => ö % k == 0)
+
+    jók.size
   }
 
   def main(args: Array[String]) {

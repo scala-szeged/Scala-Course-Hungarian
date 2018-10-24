@@ -11,7 +11,14 @@ object Solution {
    */
   def gradingStudents(grades: Array[Int]): Array[Int] = {
 
-    grades
+    grades.map { g =>
+      if (g < 38)
+        g
+      else if (g % 5 < 3)
+        g
+      else
+        g / 5 * 5 + 5 // g / 5 eredménye Int, nem Double vagy Float
+    }
   }
 
   def main(args: Array[String]) {

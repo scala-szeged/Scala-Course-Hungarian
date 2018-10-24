@@ -1,15 +1,5 @@
 package g.hetedik.het
 
-import java.io._
-import java.math._
-import java.security._
-import java.text._
-import java.util._
-import java.util.concurrent._
-import java.util.function._
-import java.util.regex._
-import java.util.stream._
-
 // https://www.hackerrank.com/challenges/breaking-best-and-worst-records
 
 object Solution_breakingRecords {
@@ -17,7 +7,30 @@ object Solution_breakingRecords {
   // Complete the breakingRecords function below.
   def breakingRecords(scores: Array[Int]): Array[Int] = {
 
-    scores
+    if (scores.isEmpty) {
+      Array(0, 0)
+
+    } else {
+
+      var min = scores.head
+      var max = scores.head
+      var minSzáma = 0
+      var maxSzáma = 0
+
+      for (s <- scores.tail) {
+
+        if (s < min) {
+          min = s
+          minSzáma += 1
+        }
+        if (s > max) {
+          max = s
+          maxSzáma += 1
+        }
+      }
+
+      Array(maxSzáma, minSzáma)
+    }
   }
 
   def main(args: Array[String]) {
