@@ -13,5 +13,6 @@ object B1__Solution {
   }
 
   def mix(p: String, q: String): String = {
+    ""
   }
 }
