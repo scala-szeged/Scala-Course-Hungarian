@@ -1,7 +1,4 @@
-package h.nyolcadik.het
-
-// Itt található a feladat: https://www.hackerrank.com/challenges/lists-and-gcd/problem
-// A regisztrált felhasználók beküldhetik a megoldást, a B4__ prefix ilyenkor törlendő.
+package i.kilencedik.het
 
 object B3_Solution {
 
@@ -21,11 +18,10 @@ object B3_Solution {
     println(result.toList.sorted.flatMap { case (prime, n) => List(prime, n) }.mkString(" "))
   }
 
-  def prepare(str: String): Map[Int, Int] = {
+  def prepare(str: String): Map[Int, Int] =
+    str.split(" ").filter(_.nonEmpty).map(_.toInt).grouped(2).
+      map(arr => arr(0) -> arr(1)).toMap
 
-  }
-
-  def calc(gcd: Map[Int, Int], line: Map[Int, Int]): Map[Int, Int] = {
-
-  }
+  def calc(gcd: Map[Int, Int], line: Map[Int, Int]): Map[Int, Int] =
+    for ((prime, n) <- gcd if line.contains(prime)) yield prime -> Math.min(n, line(prime))
 }
