@@ -15,9 +15,14 @@ object B2__Solution {
     */
 
     testCase00()
+    testCase0()
+    testCase1()
   }
 
   def hiányzóSzámok(a: String, b: String): List[Int] = {
+    val hiány = b.split(" ").diff(a.split(" "))
+    val szűrt = hiány.filter(_ != "")
+    szűrt.map(_.toInt).sorted.distinct.toList
   }
 
   def testCase00(): Unit = {
