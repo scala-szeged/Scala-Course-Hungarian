@@ -3,7 +3,7 @@ package h.nyolcadik.het
 // Itt található a feladat: https://www.hackerrank.com/challenges/missing-numbers-fp/problem
 // A regisztrált felhasználók beküldhetik a megoldást, a B2__ prefix ilyenkor törlendő.
 
-object B2__Solution {
+object H2__Solution {
 
   def main(args: Array[String]): Unit = {
     /*
@@ -21,7 +21,7 @@ object B2__Solution {
   }
 
   def hiányzóSzámok(a: String, b: String): List[Int] = {
-    val eredmény = ???
+    val eredmény = List()
     eredmény.distinct // kiszűri az azonos elemeket, ahogy azt a feladatban kérik
   }
 
