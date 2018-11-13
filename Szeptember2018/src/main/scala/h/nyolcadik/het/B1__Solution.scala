@@ -6,9 +6,13 @@ package h.nyolcadik.het
 object B1__Solution {
 
   def main(args: Array[String]): Unit = {
-    val scan = scala.Console
-    val p = scan.readLine
-    val q = scan.readLine
+    /*
+        val scan = scala.Console
+        val p = scan.readLine
+        val q = scan.readLine
+    */
+    val p = "abcde"
+    val q = "pqrst"
     println(mix(p, q))
   }
 
