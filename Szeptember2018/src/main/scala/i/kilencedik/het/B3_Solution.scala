@@ -1,5 +1,9 @@
 package i.kilencedik.het
 
+
+// https://www.hackerrank.com/challenges/lists-and-gcd/problem
+
+
 object B3_Solution {
 
   def main(args: Array[String]): Unit = {
