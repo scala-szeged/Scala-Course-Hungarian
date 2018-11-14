@@ -5,6 +5,11 @@ import java.io.PrintWriter
 // Itt található a feladat: https://www.hackerrank.com/challenges/repeated-string/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=warmup
 // A regisztrált felhasználók beküldhetik a megoldást, a B1__ prefix ilyenkor törlendő.
 
+// A feladat magyarra fordítva:
+// Az str nevű stringet kellő számban egymásután kell ismételni úgy, hogy a teljs hossza legalább n legyen.
+// Véve az első n karaktert meg kell számolni az "a" betűket és ez kell visszaadni eredményként.
+// A számoldAzAkat nevű metódust kell implementálni.
+
 object J3__Solution {
 
   def main(args: Array[String]): Unit = {
