@@ -60,7 +60,7 @@ object K2AknakeresoFunkcionálisLego {
 
   def lépj(régi: Táblák): Táblák = {
     val lépés = jelöldAzAknákat andThen takardKiANemAknákat
-    implicit val újTábla :: régiTáblák = lépés(régi)
+    val újTábla :: régiTáblák = lépés(régi)
     if (újTábla != régi.head)
       lépj(újTábla :: régiTáblák)
     else
