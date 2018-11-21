@@ -17,6 +17,10 @@ object J1__Solution {
   }
 
   def mix(p: String, q: String): String = {
-    ""
+    val eredmeny =
+      for (i <- 0 until p.length)
+        yield "" + p(i) + q(i)
+
+    eredmeny.mkString
   }
 }

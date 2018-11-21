@@ -28,7 +28,11 @@ object J3__Solution {
   }
 
   def számoldAzAkat(str: String, n: Int): Int = {
-    0
+    val strBenASzáma = str.count(_ == 'a')
+    val szorzó = n / str.length
+
+    val maradékMéret = n % str.length
+    (szorzó * strBenASzáma) + str.take(maradékMéret).count(_ == 'a')
   }
 
   def teszt1(): Unit = {

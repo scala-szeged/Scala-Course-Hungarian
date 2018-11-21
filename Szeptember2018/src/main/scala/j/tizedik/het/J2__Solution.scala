@@ -27,8 +27,8 @@ object J2__Solution {
   }
 
   def hiányzóSzámok(a: String, b: String): List[Int] = {
-    val eredmény = List()
-    eredmény.distinct // kiszűri az azonos elemeket, ahogy azt a feladatban kérik
+    val hiány = b.split(" ").diff(a.split(" "))
+    hiány.map(_.toInt).sorted.distinct.toList
   }
 
   def testCase00(): Unit = {
