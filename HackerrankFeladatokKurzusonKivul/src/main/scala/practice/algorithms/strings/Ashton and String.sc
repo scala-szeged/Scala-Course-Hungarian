@@ -1,4 +1,4 @@
-import javax.print.attribute.standard.MediaSize.Other
+
 // https://www.hackerrank.com/challenges/ashton-and-string
 
 // More elegant solution, but also times out: https://scalafiddle.io/sf/A0Dbtlu/0?fbclid=IwAR2usxCAZLYo2Obh_O5nQoovIulCF9vcY-7q-C7bGtvlS0VO-Ub6wRkQtbs
