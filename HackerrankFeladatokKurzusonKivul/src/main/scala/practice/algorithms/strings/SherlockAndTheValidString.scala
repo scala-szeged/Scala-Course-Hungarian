@@ -11,21 +11,24 @@ object SherlockAndTheValidString {
   val testCase6 = "xxxaabbccrry" //NO
 
 
-  //noinspection VariablePatternShadow
+  //noinspection VariablePatternShadow,ScalaUnnecessaryParentheses
   private def isValid(str: String) = {
-    val groupLengths = str.groupBy(c => c).values.map(_.length)
-    val ((max, maxCount), (min, minCount)) =
-      groupLengths.foldLeft(((Int.MinValue, 0), (Int.MaxValue, 0))) {
-        case (((max, maxCount), (min, minCount)), len) =>
-          (
-            if (len > max) (len, 1) else if (len == max) (max, maxCount + 1) else (max, maxCount),
-            if (len < min) (len, 1) else if (len == min) (min, minCount + 1) else (min, minCount)
-          )
-      }
+    val groups = str.groupBy(c => c)
+    val allLengths = groups.values.map(_.length)
 
-    groupLengths.forall(_ == 1) ||
-      (groupLengths.count(_ == 1) == 1 && groupLengths.filter(_ > 1).sliding(2).forall { case a :: b :: Nil => a == b }) ||
-      (max == min + 1 && maxCount == 1)
+    (
+      allLengths.forall(_ == allLengths.head)
+
+        ||
+
+        groups.keys.exists { ch =>
+          val lengths =
+            groups.map { case (c, s) => if (c == ch) s.length - 1 else s.length }.
+              filter { len => len > 0 }
+
+          lengths.forall(_ == lengths.head)
+        }
+      )
   }
 
   def eval(reader: InputStreamReader): Unit = {
