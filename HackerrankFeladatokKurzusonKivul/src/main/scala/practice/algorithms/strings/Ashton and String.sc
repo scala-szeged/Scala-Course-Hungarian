@@ -85,7 +85,7 @@ val testCase1 =
     |judaioobpoiteiszvzlscmpmpqqwuvtdqzdapudfimaowsnttalwndievaapwusmtyoksrpcfpqbkgvfiibvlkbjkcy
     |2473""".stripMargin.lines.toList.tail.tail
 
-val testCase1Out = "b d d o w" //.split(" ").mkString
+val testCase1ExpectedOut = "b d d o w" //.split(" ").mkString
 
 val results = for (s :: k :: Nil <- testCase1.grouped(2)) yield ashtonString(s, k.toInt)
 results.toList
