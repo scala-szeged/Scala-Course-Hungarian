@@ -18,5 +18,5 @@ object AknakeresoModel {
   type Tábla = List[List[Cella]]
   type Táblák = List[Tábla]
   type KoordinátaLista = List[(Int, Int)]
-  type KoordinátaSet = Set[(Int, Int)]
+  type KoordinátaSet = Set[(Int, Int)] // todo használni lehetne
 }

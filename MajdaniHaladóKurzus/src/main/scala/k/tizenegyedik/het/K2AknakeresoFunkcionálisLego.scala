@@ -194,6 +194,7 @@ object K2AknakeresoFunkcionálisLego {
 
   def nullaSzomszédokSzomszédjai(nulla: (Int, Int), tábla: Tábla): Set[(Int, Int)] = {
 
+    // todo miért igaz módosítás nélkül is, hogy aknákat nem takar ki?
     //noinspection TypeAnnotation
     def loop(szomszédokEddig: Set[(Int, Int)], c: (Int, Int)): Set[(Int, Int)] = {
       implicit val cella = c
@@ -203,8 +204,10 @@ object K2AknakeresoFunkcionálisLego {
       tábla(y)(x) match {
         case TakartSzám(0) =>
           (szomszédok + c -- szomszédokEddig).foldLeft(szomszédok + c ++ szomszédokEddig)(loop)
-        case _ =>
+        case TakartSzám(_) =>
           (szomszédokEddig + c).filter(takart)
+        case _ =>
+          szomszédokEddig.filter(takart)
       }
     }
 
