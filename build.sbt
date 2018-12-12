@@ -9,3 +9,5 @@ lazy val MajdaniHaladóKurzus = project
 lazy val FpInScalaExercises = project
 
 lazy val CatsExamplesByTypelevelOrg = project
+
+lazy val HackerrankFeladatokKurzusonKivul = project
