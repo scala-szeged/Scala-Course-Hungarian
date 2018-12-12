@@ -1,6 +1,6 @@
 package practice.algorithms.strings
 
-import java.io.{FileReader, InputStreamReader}
+import java.io.{FileReader, InputStreamReader, Reader, StringReader}
 
 object SherlockAndTheValidString {
   //   object Solution {
@@ -31,7 +31,7 @@ object SherlockAndTheValidString {
       )
   }
 
-  def eval(reader: InputStreamReader): Unit = {
+  def eval(reader: Reader): Unit = {
     scala.Console.withIn(reader) {
       val s = readLine()
       println(
@@ -44,10 +44,21 @@ object SherlockAndTheValidString {
 
     // eval(new InputStreamReader(System.in)) /*
 
-    println(isValid(testCase0), "NO", testCase0)
-    println(isValid(testCase1), "NO", testCase1)
-    println(isValid(testCase2), "YES", testCase2)
-    println(isValid(testCase6), "NO", testCase6)
+    println
+    println("NO", testCase0)
+    eval(new StringReader(testCase0))
+
+    println
+    println("NO", testCase1)
+    eval(new StringReader(testCase1))
+
+    println
+    println("YES", testCase2)
+    eval(new StringReader(testCase2))
+
+    println
+    println("NO", testCase6)
+    eval(new StringReader(testCase6))
 
     val path = "HackerrankFeladatokKurzusonKivul/src/main/scala/practice/algorithms/strings/"
 
