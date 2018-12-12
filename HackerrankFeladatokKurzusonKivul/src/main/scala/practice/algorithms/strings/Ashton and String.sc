@@ -3,7 +3,7 @@
 
 // More elegant solution, but also times out: https://scalafiddle.io/sf/A0Dbtlu/0?fbclid=IwAR2usxCAZLYo2Obh_O5nQoovIulCF9vcY-7q-C7bGtvlS0VO-Ub6wRkQtbs
 
-case class Slice(i: Int, j: Int, s: String) {
+class Slice(i: Int, j: Int, s: String) {
 
   def charAtSlice(n: Int) = s.charAt(i + n)
 
@@ -35,7 +35,7 @@ def ashtonString(s: String, k: Int) = {
   val arr = for {
     i <- 0 to len - 1
     j <- i + 1 to len
-  } yield Slice(i, j, s)
+  } yield new Slice(i, j, s)
 
 
   trait SliceOrderingT extends Ordering[Slice] {
