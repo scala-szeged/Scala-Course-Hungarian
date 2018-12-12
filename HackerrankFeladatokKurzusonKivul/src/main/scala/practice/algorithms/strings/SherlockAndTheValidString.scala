@@ -13,27 +13,24 @@ object SherlockAndTheValidString {
 
   //noinspection VariablePatternShadow
   private def isValid(str: String) = {
-    val groups = str.groupBy(c => c)
+    val groupLengths = str.groupBy(c => c).values.map(_.length)
     val ((max, maxCount), (min, minCount)) =
-      groups.foldLeft(((Int.MinValue, 0), (Int.MaxValue, 0))) {
-        case (((max, maxCount), (min, minCount)), (c, s)) =>
-          val len = s.length
+      groupLengths.foldLeft(((Int.MinValue, 0), (Int.MaxValue, 0))) {
+        case (((max, maxCount), (min, minCount)), len) =>
           (
             if (len > max) (len, 1) else if (len == max) (max, maxCount + 1) else (max, maxCount),
             if (len < min) (len, 1) else if (len == min) (min, minCount + 1) else (min, minCount)
           )
       }
 
-
-    groups.forall { case (c, s) => s.length == 1 } ||
-      (groups.count { case (c, s) => s.length == 1 } == 1 &&
-        groups.filter { case (c, s) => s.length > 1 }.forall { case (c, s) => s.length == groups.head._2.length }) ||
+    groupLengths.forall(_ == 1) ||
+      (groupLengths.count(_ == 1) == 1 && groupLengths.filter(_ > 1).sliding(2).forall { case a :: b :: Nil => a == b }) ||
       (max == min + 1 && maxCount == 1)
   }
 
   def eval(reader: InputStreamReader): Unit = {
     scala.Console.withIn(reader) {
-      val s = readLine
+      val s = readLine()
       println(
         if (isValid(s)) "YES" else "NO"
       )
@@ -58,6 +55,10 @@ object SherlockAndTheValidString {
     println
     println("YES", "Test case 13.txt")
     eval(new FileReader(path + "Test case 13.txt"))
+
+    println
+    println("YES", "Test case 14.txt")
+    eval(new FileReader(path + "Test case 14.txt"))
 
     // */
   }
