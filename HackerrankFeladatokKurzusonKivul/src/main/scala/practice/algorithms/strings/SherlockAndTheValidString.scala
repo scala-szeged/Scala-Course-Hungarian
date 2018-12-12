@@ -2,6 +2,9 @@ package practice.algorithms.strings
 
 import java.io.{FileReader, InputStreamReader, Reader, StringReader}
 
+
+// THERE IS A BETTER SOLUTION HERE: https://scalafiddle.io/sf/DQZ8buU/0?fbclid=IwAR1vov7pR9qlb1kzHa6bkTCwnm7fKWestXYVEngQ9w-zQnH8JFTt1QNGGt4
+
 object SherlockAndTheValidString {
   //   object Solution {
 
