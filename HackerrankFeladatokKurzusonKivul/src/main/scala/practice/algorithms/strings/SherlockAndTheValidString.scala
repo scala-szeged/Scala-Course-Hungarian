@@ -13,8 +13,8 @@ object SherlockAndTheValidString {
 
   //noinspection VariablePatternShadow,ScalaUnnecessaryParentheses
   private def isValid(str: String) = {
-    val groups = str.groupBy(c => c)
-    val allLengths = groups.values.map(_.length)
+    val groups = str.groupBy(identity)
+    val allLengths = groups.values.map(_.length) // groups.mapValues(_.length) gives bad result for Test case 14
 
     (
       allLengths.forall(_ == allLengths.head)
@@ -22,9 +22,9 @@ object SherlockAndTheValidString {
         ||
 
         groups.keys.exists { ch =>
-          val lengths =
-            groups.map { case (c, s) => if (c == ch) s.length - 1 else s.length }.
-              filter { len => len > 0 }
+          val lengths = groups.
+            map { case (c, s) => if (c == ch) s.length - 1 else s.length }.
+            filter { len => len > 0 }
 
           lengths.forall(_ == lengths.head)
         }
