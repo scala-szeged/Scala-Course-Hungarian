@@ -21,7 +21,7 @@ object Exercise_5_13 {
       case (a #:: aTail, b #:: bTail) => Some(((a, b), (aTail, bTail)))
     }
 
-    def stringStream(n: Int): String = as.take(n).toList.mkString("Stream(", ",", ")")
+    def stringStream(n: Int): String = as.take(n).toList.mkString("Stream(", ",", ")") // test only method
   }
 
 
