@@ -52,6 +52,7 @@ object Exercise_5_13 {
   def main(args: Array[String]): Unit = {
     val whole = Stream(1, 2, 3, 4, 5, 6, 7, 8, 9)
     testMap(whole)
+    println
     testHasSubsequence(whole, Stream(4, 5))
     testHasSubsequence(whole, Stream(1, 2, 9, 4, 5))
   }
