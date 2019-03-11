@@ -9,7 +9,7 @@ object Exercise_5_13 {
 
   implicit class ZipWithForStream[A](as: Stream[A]) {
 
-    // map, take, takeWhile, zipWith, zipAll
+    // todo: take, takeWhile, zipAll
     def myMap[B](f: A => B): Stream[B] = as match {
       case Stream.Empty => Stream.empty[B]
       case aHead #:: aTail => Stream.cons(f(aHead), aTail.myMap(f))
