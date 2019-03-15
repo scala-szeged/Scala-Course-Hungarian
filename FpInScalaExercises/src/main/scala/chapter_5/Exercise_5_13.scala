@@ -7,7 +7,7 @@ object Exercise_5_13 {
     case Some((a, s)) => Stream.cons(a, unFold(s)(f))
   }
 
-  implicit class ZipWithForStream[A](as: Stream[A]) {
+  implicit class MyStreamEx[A](as: Stream[A]) {
 
     // todo: take, takeWhile, zipAll
     def myMap[B](f: A => B): Stream[B] = as match {
@@ -21,16 +21,26 @@ object Exercise_5_13 {
       case (a #:: aTail, b #:: bTail) => Some(((a, b), (aTail, bTail)))
     }
 
+    def myTails: Stream[Stream[A]] = unFold(as) {
+      case Stream.Empty => None
+      case a #:: t => Some((Stream.cons(a, t), t))
+    }
+
     def stringStream(n: Int): String = as.take(n).toList.mkString("Stream(", ",", ")") // test only method
   }
 
+  /**
+    * See the right solution from Cale Gibbard at http://lambda-the-ultimate.org/node/1277#comment-14313
+    * "isSubstringOf x y = any (isPrefixOf x) (tails y)"
+    */
+  def hasSubsequence[A](whole: Stream[A], part: Stream[A]): Boolean = whole.myTails.exists(_.startsWith(part))
 
-  def hasSubsequence[A](whole: Stream[A], part: Stream[A]): Boolean = whole match {
+  def hasSubsequence_0[A](whole: Stream[A], part: Stream[A]): Boolean = whole match {
     case Stream.Empty =>
       false
 
     case _ #:: wTail =>
-      if (whole.myZipWith(part).takeWhile { case (w, p) => w == p }.size == part.size)
+      if (whole.myZipWith(part).forall { case (w, p) => w == p })
         true
       else
         hasSubsequence(wTail, part)
@@ -39,6 +49,11 @@ object Exercise_5_13 {
   def testMap(whole: Stream[Int]): Unit = {
     println(s"the original: ${whole.stringStream(40)}")
     println(s" after myMap: ${whole.myMap(_ + 10).stringStream(40)}")
+  }
+
+  def testTails(s: Stream[Int]): Unit = {
+    println(s"the stream: ${s.stringStream(40)}")
+    println(s"the tails: ${s.myTails.stringStream(40)}")
   }
 
   def testHasSubsequence[A](whole: Stream[A], part: Stream[A]): Unit = {
@@ -52,6 +67,8 @@ object Exercise_5_13 {
   def main(args: Array[String]): Unit = {
     val whole = Stream(1, 2, 3, 4, 5, 6, 7, 8, 9)
     testMap(whole)
+    println
+    testTails(whole)
     println
     testHasSubsequence(whole, Stream(4, 5))
     testHasSubsequence(whole, Stream(1, 2, 9, 4, 5))
