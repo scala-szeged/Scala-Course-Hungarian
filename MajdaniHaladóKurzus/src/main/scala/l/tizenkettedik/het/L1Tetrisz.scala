@@ -1,5 +1,7 @@
 package l.tizenkettedik.het
 
+// Konkrét megoldásként lásd: https://github.com/JetBrains/kotlin-native/blob/b0296b1c8db49fd497f878e26e23b31cb19673de/samples/tetris/README.md
+
 import java.lang.Math.{max, min}
 
 object L1Tetrisz {
