@@ -1,6 +1,6 @@
 # Tigra-Scala-kurzus
 
-A Tigra által tartott Scala gyakorlat anyaga.
+Az általam tartott Scala gyakorlat anyaga.
 IntelliJ -vel, esetleg Eclipse -vel lehet olvasni.
 
 Az **A1 xxxx.sc** fájlnál kell kezdeni, majd az **A2 yyyy.sc** -vel kell folytatni.
